@@ -1,0 +1,11 @@
+dist
+**/*.md
+**/*.svg
+**/*.html
+**/*.art
+**/*.js
+**/*.png
+**/*.eot
+**/*.ttf
+**/*.woff
+**/*.js

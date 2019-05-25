@@ -1,23 +1,24 @@
-const path = require("path");
+const path = require('path');
 
 module.exports = {
-  presets: ["@babel/env", "@babel/preset-react"],
+  presets: ['@babel/env', '@babel/preset-react'],
   plugins: [
-    ["@babel/plugin-transform-runtime"],
+    ['@babel/plugin-transform-runtime'],
     [
-      "module-resolver",
+      'module-resolver',
       {
         alias: {
-          "@": path.join(__dirname, "src")
-        }
-      }
+          '@': path.join(__dirname, 'src'),
+        },
+      },
     ],
     [
-      "import",
+      'import',
       {
-        libraryName: "antd",
-        style: true // or 'css'
-      }
-    ]
-  ]
+        libraryName: 'antd',
+        libraryDirectory: 'es',
+        style: true, // or 'css'
+      },
+    ],
+  ],
 };

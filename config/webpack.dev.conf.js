@@ -1,13 +1,13 @@
-"use strict";
-const webpack = require("webpack");
-const merge = require("webpack-merge");
-const path = require("path");
-const CopyWebpackPlugin = require("copy-webpack-plugin");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const portfinder = require("portfinder");
+'use strict';
+const webpack = require('webpack');
+const merge = require('webpack-merge');
+const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const portfinder = require('portfinder');
 
-const config = require("./config");
-const baseWebpackConfig = require("./webpack.base.conf");
+const config = require('./config');
+const baseWebpackConfig = require('./webpack.base.conf');
 
 const HOST = process.env.HOST;
 const PORT = process.env.PORT && Number(process.env.PORT);
@@ -15,14 +15,14 @@ const PORT = process.env.PORT && Number(process.env.PORT);
 const devWebpackConfig = merge(baseWebpackConfig, {
   devtool: config.dev.devtool,
   devServer: {
-    clientLogLevel: "warning",
+    clientLogLevel: 'warning',
     historyApiFallback: {
       rewrites: [
         {
           from: /.*/,
-          to: path.posix.join(config.dev.assetsPublicPath, "index.html")
-        }
-      ]
+          to: path.posix.join(config.dev.assetsPublicPath, 'index.html'),
+        },
+      ],
     },
     hot: true,
     contentBase: false, // since we use CopyWebpackPlugin.
@@ -32,26 +32,26 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     open: true,
     overlay: { warnings: false, errors: true },
     publicPath: config.dev.assetsPublicPath,
-    proxy: config.dev.proxyTable
+    proxy: config.dev.proxyTable,
   },
   plugins: [
     new webpack.DefinePlugin({
-      "process.env.NODE_ENV": JSON.stringify("development")
+      'process.env.NODE_ENV': JSON.stringify('development'),
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(),
     new HtmlWebpackPlugin(),
     new CopyWebpackPlugin([
       {
-        from: path.resolve(__dirname, "../public"),
-        to: "public",
-        ignore: [".*"]
-      }
-    ])
+        from: path.resolve(__dirname, '../public'),
+        to: 'public',
+        ignore: ['.*'],
+      },
+    ]),
   ],
   optimization: {
-    noEmitOnErrors: true
-  }
+    noEmitOnErrors: true,
+  },
 });
 
 module.exports = new Promise((resolve, reject) => {
