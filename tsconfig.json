@@ -12,5 +12,5 @@
     "jsx": "react",
     "allowJs": true
   },
-  "include": ["./src/**/*", "./test/**/*"]
+  "include": ["src/**/*", "test/**/*"]
 }

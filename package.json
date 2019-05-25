@@ -15,7 +15,6 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@types/less": "^3.0.0",
     "@types/react": "^16.8.18",
     "@types/react-dom": "^16.8.4",
     "antd": "^3.18.2",
