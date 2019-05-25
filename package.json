@@ -5,14 +5,12 @@
   "private": true,
   "author": "Tan90Qian <1436811949@qq.com>",
   "scripts": {
-    "precommit": "npm run lint-staged",
     "start": "webpack-dev-server --inline --progress --config config/webpack.dev.conf.js",
     "build": "node config/build.js",
     "lint": "eslint --ext .ts,.tsx src && npm run lint-style",
     "lint:fix": "eslint --fix --ext .ts,.tsx src && npm run lint-style:fix",
     "lint-style": "stylelint \"src/**/*.{less,css}\"",
     "lint-style:fix": "stylelint \"src/**/*.{less,css}\" --fix",
-    "lint-staged": "lint-staged",
     "prettier": "prettier --write \"src/**/*.{ts,tsx,less,css}\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -39,6 +37,7 @@
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-react": "^7.13.0",
     "html-webpack-plugin": "^3.2.0",
+    "husky": "^2.3.0",
     "less": "^3.9.0",
     "less-loader": "^5.0.0",
     "lint-staged": "^8.1.7",
@@ -64,14 +63,19 @@
     "webpack-dev-server": "^3.4.1",
     "webpack-merge": "^4.2.1"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "lint-staged": {
     "linters": {
-      "**/*.{ts,tsx}": [
+      "*.{ts,tsx}": [
         "prettier --write",
         "eslint --fix",
         "git add"
       ],
-      "**/*.{less,css}": [
+      "*.{less,css}": [
         "prettier --write",
         "stylelint --fix",
         "git add"
