@@ -23,7 +23,7 @@ function resolve(dir) {
 module.exports = {
   context: path.resolve(__dirname, '../'),
   entry: {
-    index: './src/index.js',
+    index: './src/index.tsx',
   },
   output: {
     publicPath:
@@ -34,7 +34,7 @@ module.exports = {
     path: config.build.assetsRoot,
   },
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.tsx', '.ts', '.js', '.jsx'],
     alias: {
       '@': resolve('src'),
     },
@@ -42,7 +42,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
+        test: /\.(js|jsx|ts|tsx)$/,
         loader: 'eslint-loader',
         enforce: 'pre',
         include: [resolve('src'), resolve('test')],
@@ -51,13 +51,17 @@ module.exports = {
         },
       },
       {
-        test: /\.(js|jsx)$/,
-        loader: 'babel-loader',
-        include: [
-          resolve('src'),
-          resolve('test'),
-          resolve('node_modules/webpack-dev-server/client'),
+        test: /\.tsx?$/,
+        use: [
+          {
+            loader: 'ts-loader',
+            options: {
+              transpileOnly: true,
+              experimentalWatchApi: true,
+            },
+          },
         ],
+        exclude: /node_modules/,
       },
       {
         test: /\.css$/,

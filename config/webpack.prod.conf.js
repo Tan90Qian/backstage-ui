@@ -22,6 +22,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     }),
     new HtmlWebpackPlugin({
       filename: path.resolve(__dirname, '../dist/index.html'),
+      template: path.resolve(__dirname,'../src/index.ejs'),
       minify: {
         removeComments: true,
         collapseWhitespace: true,
@@ -46,6 +47,7 @@ const webpackConfig = merge(baseWebpackConfig, {
           test: /[\\/]node_modules[\\/]/,
           name: 'vendors',
           chunks: 'all',
+          filename: 'vendors.[contenthash:8].js',
         },
       },
     },

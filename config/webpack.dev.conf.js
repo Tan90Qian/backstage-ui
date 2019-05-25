@@ -35,12 +35,16 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     proxy: config.dev.proxyTable,
   },
   plugins: [
+    new webpack.WatchIgnorePlugin([/\.js$/, /\.d\.ts$/]),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('development'),
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(),
-    new HtmlWebpackPlugin(),
+    new HtmlWebpackPlugin({
+      filename: path.resolve(__dirname, '../dist/index.html'),
+      template: path.resolve(__dirname,'../src/index.ejs'),
+    }),
     new CopyWebpackPlugin([
       {
         from: path.resolve(__dirname, '../public'),
