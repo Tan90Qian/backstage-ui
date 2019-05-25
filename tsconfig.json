@@ -7,10 +7,11 @@
     },
     "sourceMap": true,
     "noImplicitAny": true,
-    "module": "es6",
+    "module": "ESNext",
     "target": "es5",
     "jsx": "react",
+    "moduleResolution": "node",
     "allowJs": true
   },
-  "include": ["src/**/*", "test/**/*"]
+  "include": ["src/**/*", "types/**/*", "test/**/*"]
 }

@@ -2,6 +2,7 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
+const tsImportPluginFactory = require('ts-import-plugin');
 
 const config = require('./config');
 
@@ -51,12 +52,26 @@ module.exports = {
         },
       },
       {
-        test: /\.tsx?$/,
+        test: /\.(js|ts)x?$/,
         use: [
           {
             loader: 'ts-loader',
             options: {
               transpileOnly: true,
+              getCustomTransformers: () => ({
+                before: [
+                  tsImportPluginFactory([
+                    {
+                      libraryName: 'antd',
+                      libraryDirectory: 'lib',
+                      style: true,
+                    },
+                  ]),
+                ],
+              }),
+              compilerOptions: {
+                module: 'es2015',
+              },
               experimentalWatchApi: true,
             },
           },
@@ -89,8 +104,29 @@ module.exports = {
             },
           },
           'postcss-loader',
-          'less-loader',
+          {
+            loader: 'less-loader',
+            options: {
+              javascriptEnabled: true,
+            },
+          },
         ],
+        exclude: /node_modules/,
+      },
+      {
+        test: /\.less$/,
+        use: [
+          devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
+          'css-loader',
+          'postcss-loader',
+          {
+            loader: 'less-loader',
+            options: {
+              javascriptEnabled: true,
+            },
+          },
+        ],
+        include: /node_modules/,
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
