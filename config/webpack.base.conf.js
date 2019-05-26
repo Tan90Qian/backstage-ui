@@ -160,7 +160,6 @@ module.exports = {
     }),
     new MiniCssExtractPlugin({
       filename: devMode ? '[name].css' : '[name].[contenthash:8].css',
-      chunkFilename: devMode ? '[id].css' : '[id].[contenthash:8].css',
     }),
   ],
 };
