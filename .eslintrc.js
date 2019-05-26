@@ -19,6 +19,9 @@ module.exports = {
     'react/jsx-filename-extension': [1, { extensions: ['.ts', '.tsx'] }],
     'import/no-unresolved': [0],
     'react/jsx-one-expression-per-line': [0],
+    '@typescript-eslint/interface-name-prefix': [0],
+    'no-use-before-define': [0],
+    '@typescript-eslint/no-use-before-define': [0],
   },
   parserOptions: {
     project: 'tsconfig.json',

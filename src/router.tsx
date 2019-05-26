@@ -4,9 +4,10 @@ import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import { LocaleProvider } from 'antd';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
 
-import routerData from './common/index';
+import { getRouterData } from './common/router';
 
 function RouterConfig(): JSX.Element {
+  const routerData = getRouterData();
   const UserLayout = routerData['/user'].component;
   const BasicLayout = routerData['/'].component;
   return (
