@@ -11,7 +11,10 @@
     "target": "es5",
     "jsx": "react",
     "moduleResolution": "node",
-    "allowJs": true
+    "allowJs": true,
+    "lib": ["dom", "es6", "es7"],
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true
   },
   "include": ["src/**/*", "types/**/*", "test/**/*"]
 }
