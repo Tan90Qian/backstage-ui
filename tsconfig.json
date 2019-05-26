@@ -7,10 +7,14 @@
     },
     "sourceMap": true,
     "noImplicitAny": true,
-    "module": "es6",
+    "module": "ESNext",
     "target": "es5",
     "jsx": "react",
-    "allowJs": true
+    "moduleResolution": "node",
+    "allowJs": true,
+    "lib": ["dom", "es6", "es7"],
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true
   },
-  "include": ["src/**/*", "test/**/*"]
+  "include": ["src/**/*", "types/**/*", "test/**/*"]
 }

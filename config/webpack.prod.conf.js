@@ -6,6 +6,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const config = require('./config');
 const baseWebpackConfig = require('./webpack.base.conf');
@@ -22,7 +23,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     }),
     new HtmlWebpackPlugin({
       filename: path.resolve(__dirname, '../dist/index.html'),
-      template: path.resolve(__dirname,'../src/index.ejs'),
+      template: path.resolve(__dirname, '../src/index.ejs'),
       minify: {
         removeComments: true,
         collapseWhitespace: true,
@@ -39,6 +40,7 @@ const webpackConfig = merge(baseWebpackConfig, {
         ignore: ['.*'],
       },
     ]),
+    new BundleAnalyzerPlugin({ analyzerMode: 'static', openAnalyzer: false }),
   ],
   optimization: {
     splitChunks: {
@@ -52,6 +54,11 @@ const webpackConfig = merge(baseWebpackConfig, {
       },
     },
     minimizer: [new OptimizeCSSAssetsPlugin({ safe: true }), new UglifyJsPlugin()],
+  },
+  performance: {
+    hints: 'error',
+    maxEntrypointSize: 1000000,
+    maxAssetSize: 1000000,
   },
 });
 

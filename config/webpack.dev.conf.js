@@ -29,7 +29,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     compress: true,
     host: HOST || config.dev.host,
     port: PORT || config.dev.port,
-    open: true,
+    open: false,
     overlay: { warnings: false, errors: true },
     publicPath: config.dev.assetsPublicPath,
     proxy: config.dev.proxyTable,

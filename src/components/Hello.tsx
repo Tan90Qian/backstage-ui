@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Button } from 'antd';
 
 import * as style from './hello.less';
 
@@ -11,7 +12,7 @@ export const Hello = (props: HelloProps): React.FunctionComponentElement<HTMLEle
   const { compiler, framework } = props;
   return (
     <h1 className={style.title}>
-      Hello from {compiler} and {framework}!!
+      Hello from {compiler} and {framework}!<Button>1</Button>
     </h1>
   );
 };
