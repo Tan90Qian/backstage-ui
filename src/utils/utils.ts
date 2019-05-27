@@ -1,6 +1,14 @@
 import { parse, stringify } from 'qs';
 
-function getRelation(str1, str2) {
+import { IRouterData, IRouterItem } from 'src/common/router';
+
+export interface IRouteItem extends IRouterItem {
+  key: string;
+  path: string;
+  exact: boolean;
+}
+
+function getRelation(str1: string, str2: string): number {
   if (str1 === str2) {
     console.warn('Two path are equal!'); // eslint-disable-line
   }
@@ -15,7 +23,7 @@ function getRelation(str1, str2) {
   return 3;
 }
 
-function getRenderArr(routes) {
+function getRenderArr(routes: string[]): string[] {
   let renderArr = [];
   renderArr.push(routes[0]);
   for (let i = 1; i < routes.length; i += 1) {
@@ -36,7 +44,7 @@ function getRenderArr(routes) {
  * @param {string} path
  * @param {routerData} routerData
  */
-export function getRoutes(path, routerData) {
+export function getRoutes(path: string, routerData: IRouterData): IRouteItem[] {
   let routes = Object.keys(routerData).filter(
     routePath => routePath.indexOf(path) === 0 && routePath !== path
   );
@@ -57,11 +65,11 @@ export function getRoutes(path, routerData) {
   return renderRoutes;
 }
 
-export function getPageQuery() {
+export function getPageQuery(): any {
   return parse(window.location.href.split('?')[1]);
 }
 
-export function getQueryPath(path = '', query = {}) {
+export function getQueryPath(path: string = '', query: any = {}): string {
   const search = stringify(query);
   if (search.length) {
     return `${path}?${search}`;
@@ -72,6 +80,6 @@ export function getQueryPath(path = '', query = {}) {
 /* eslint no-useless-escape:0 */
 const reg = /(((^https?:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+(?::\d+)?|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)$/;
 
-export function isUrl(path) {
+export function isUrl(path: string): boolean {
   return reg.test(path);
 }

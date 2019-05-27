@@ -1,7 +1,7 @@
 {
   "name": "backstage-ui",
   "version": "1.0.0",
-  "description": "A react's backstage project",
+  "description": "A backstage ui project of React",
   "private": true,
   "author": "Tan90Qian <1436811949@qq.com>",
   "scripts": {
@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@types/path-to-regexp": "^1.7.0",
+    "@types/qs": "^6.5.3",
     "@types/react": "^16.8.18",
     "@types/react-document-title": "^2.0.3",
     "@types/react-dom": "^16.8.4",

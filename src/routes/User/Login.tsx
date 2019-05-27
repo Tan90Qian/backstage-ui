@@ -1,4 +1,4 @@
-import React, { FormEvent } from 'react';
+import React, { FormEvent, useState } from 'react';
 import { Form, Input, Icon, Button, Tabs } from 'antd';
 import { InputProps } from 'antd/lib/input';
 
@@ -12,22 +12,21 @@ const usernameDefaultProps: InputProps = {
   prefix: <Icon type="user" className={styles.prefixIcon} />,
 };
 
-const handleSubmit = (e: FormEvent): void => {
-  e.preventDefault();
-};
-
-const onSwitch = (type: string): void => {};
-
 function Login(): JSX.Element {
+  const [type, setType] = useState('account');
+
+  const handleSubmit = (e: FormEvent): void => {
+    e.preventDefault();
+  };
+
+  const onSwitch = (newType: string): void => {
+    setType(newType);
+  };
+
   return (
     <div className={styles.main}>
       <Form onSubmit={handleSubmit}>
-        <Tabs
-          animated={false}
-          className={styles.tabs}
-          defaultActiveKey="account"
-          onChange={onSwitch}
-        >
+        <Tabs animated={false} className={styles.tabs} activeKey={type} onChange={onSwitch}>
           <TabPane tab="账号密码登录" key="account">
             <FormItem required>
               <Input {...usernameDefaultProps} placeholder="请输入用户名" />

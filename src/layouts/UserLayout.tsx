@@ -2,9 +2,9 @@ import React from 'react';
 import { Link, Switch, Route, Redirect } from 'react-router-dom';
 import DocumentTitle from 'react-document-title';
 
-import { getRoutes, getPageQuery, getQueryPath } from '../utils/utils';
-import { IRouterData, IRouterItem } from '../common/router';
+import { IRouteComponentProps } from 'src/declares/RouteComponent';
 
+import { getRoutes, getPageQuery, getQueryPath, IRouteItem } from 'src/utils/utils';
 import styles from './UserLayout.less';
 
 function getLoginPathWithRedirectPath(): string {
@@ -15,21 +15,11 @@ function getLoginPathWithRedirectPath(): string {
   });
 }
 
-interface IRouterItemReal extends IRouterItem {
-  key: string;
-  path: string;
-  exact: boolean;
-}
-
 export default function UerLayout({
   routerData,
   location,
   match,
-}: {
-  routerData: IRouterData;
-  location: Location;
-  match: any;
-}): JSX.Element {
+}: IRouteComponentProps): JSX.Element {
   function getPageTitle(): string {
     const { pathname } = location;
     let title = '管理后台';
@@ -51,7 +41,7 @@ export default function UerLayout({
             </div>
           </div>
           <Switch>
-            {getRoutes(match.path, routerData).map((item: IRouterItemReal) => (
+            {getRoutes(match.path, routerData).map((item: IRouteItem) => (
               <Route
                 key={item.key}
                 path={item.path}

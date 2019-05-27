@@ -35,9 +35,9 @@ module.exports = {
     path: config.build.assetsRoot,
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js', '.jsx'],
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],
     alias: {
-      '@': resolve('src'),
+      'src': resolve('src'),
     },
   },
   module: {
