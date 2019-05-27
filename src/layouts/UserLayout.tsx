@@ -19,7 +19,7 @@ export default function UerLayout({
   routerData,
   location,
   match,
-}: IRouteComponentProps): JSX.Element {
+}: IRouteComponentProps): React.FunctionComponentElement<DocumentTitle> {
   function getPageTitle(): string {
     const { pathname } = location;
     let title = '管理后台';

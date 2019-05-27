@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useState, FunctionComponentElement } from 'react';
 import { Form, Input, Icon, Button, Tabs } from 'antd';
 import { InputProps } from 'antd/lib/input';
 
@@ -7,16 +7,19 @@ import styles from './Login.less';
 const FormItem = Form.Item;
 const { TabPane } = Tabs;
 
-const usernameDefaultProps: InputProps = {
+const InputDefaultProps: InputProps = {
   size: 'large',
   prefix: <Icon type="user" className={styles.prefixIcon} />,
 };
 
-function Login(): JSX.Element {
+export default function Login(): FunctionComponentElement<HTMLElement> {
   const [type, setType] = useState('account');
+  const [userName, setUserName] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleSubmit = (e: FormEvent): void => {
     e.preventDefault();
+    console.log(userName, password);
   };
 
   const onSwitch = (newType: string): void => {
@@ -29,10 +32,21 @@ function Login(): JSX.Element {
         <Tabs animated={false} className={styles.tabs} activeKey={type} onChange={onSwitch}>
           <TabPane tab="账号密码登录" key="account">
             <FormItem required>
-              <Input {...usernameDefaultProps} placeholder="请输入用户名" />
+              <Input
+                {...InputDefaultProps}
+                value={userName}
+                onChange={({ target }) => setUserName(target.value)}
+                placeholder="请输入用户名"
+              />
             </FormItem>
             <FormItem required>
-              <Input {...usernameDefaultProps} placeholder="请输入密码" type="password" />
+              <Input
+                {...InputDefaultProps}
+                value={password}
+                onChange={({ target }) => setPassword(target.value)}
+                placeholder="请输入密码"
+                type="password"
+              />
             </FormItem>
           </TabPane>
         </Tabs>
@@ -52,5 +66,3 @@ function Login(): JSX.Element {
     </div>
   );
 }
-
-export default Login;

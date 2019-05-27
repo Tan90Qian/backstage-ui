@@ -5,6 +5,8 @@ import Loadable from 'react-loadable';
 
 import { getMenuData, IMenuItem } from './menu';
 
+type Pick<T, K extends keyof T> = { [P in K]?: T[P] };
+
 interface IComponent {
   (): Promise<any>;
 }
@@ -23,7 +25,9 @@ export interface IRouterData {
   [propName: string]: IRouterItem;
 }
 
-let routerDataCache: object;
+type IMenuItemPicked = Pick<IMenuItem, keyof IMenuItem>;
+
+let routerDataCache: IRouterData;
 
 const dynamicWrapper = (component: IComponent): ComponentType<any> => {
   return Loadable({
@@ -72,11 +76,11 @@ function getRouterData() {
     },
   };
   const menuData: IMenuData = getFlatMenuData(getMenuData());
-  const routerData: any = {};
+  const routerData: IRouterData = {};
   Object.keys(routerConfig).forEach(path => {
     const pathRegexp = pathToRegexp(path);
     const menuKey = Object.keys(menuData).find(key => pathRegexp.test(`${key}`));
-    let menuItem: any = {};
+    let menuItem: IMenuItemPicked = {};
     // If menuKey is not empty
     if (menuKey) {
       menuItem = menuData[menuKey];
