@@ -1,39 +1,71 @@
-import React, { FormEvent } from 'react';
+import React, { FormEvent, useState, FunctionComponentElement } from 'react';
 import { Form, Input, Icon, Button, Tabs } from 'antd';
 import { InputProps } from 'antd/lib/input';
+import { WrappedFormInternalProps } from 'antd/lib/form/Form';
 
+import { RouteComponentProps } from 'src/declares/Component';
+import { login } from 'src/services/api';
 import styles from './Login.less';
 
 const FormItem = Form.Item;
 const { TabPane } = Tabs;
 
-const usernameDefaultProps: InputProps = {
+interface ComponentProps extends WrappedFormInternalProps, RouteComponentProps {}
+
+const InputDefaultProps: InputProps = {
   size: 'large',
   prefix: <Icon type="user" className={styles.prefixIcon} />,
 };
 
-const handleSubmit = (e: FormEvent): void => {
-  e.preventDefault();
-};
+function Login(props: ComponentProps): FunctionComponentElement<HTMLElement> {
+  const { form } = props;
+  const { getFieldDecorator, validateFields } = form;
+  const [type, setType] = useState('account');
+  const [submitting, setSubmitting] = useState(false);
 
-const onSwitch = (type: string): void => {};
+  const handleSubmit = (e: FormEvent): void => {
+    e.preventDefault();
+    validateFields({ force: true }, (err, value) => {
+      if (!err) {
+        setSubmitting(true);
+        login(value)
+          .then(res => {
+            setSubmitting(false);
+            console.log('res', res);
+          })
+          .catch(error => console.log('error', error));
+      }
+    });
+  };
 
-function Login(): JSX.Element {
+  const onSwitch = (newType: string): void => {
+    setType(newType);
+  };
+
   return (
     <div className={styles.main}>
       <Form onSubmit={handleSubmit}>
-        <Tabs
-          animated={false}
-          className={styles.tabs}
-          defaultActiveKey="account"
-          onChange={onSwitch}
-        >
+        <Tabs animated={false} className={styles.tabs} activeKey={type} onChange={onSwitch}>
           <TabPane tab="账号密码登录" key="account">
-            <FormItem required>
-              <Input {...usernameDefaultProps} placeholder="请输入用户名" />
+            <FormItem>
+              {getFieldDecorator('username', {
+                rules: [
+                  {
+                    required: true,
+                    message: '用户名不能为空',
+                  },
+                ],
+              })(<Input {...InputDefaultProps} placeholder="请输入用户名" />)}
             </FormItem>
-            <FormItem required>
-              <Input {...usernameDefaultProps} placeholder="请输入密码" type="password" />
+            <FormItem>
+              {getFieldDecorator('password', {
+                rules: [
+                  {
+                    required: true,
+                    message: '密码不能为空',
+                  },
+                ],
+              })(<Input {...InputDefaultProps} placeholder="请输入密码" type="password" />)}
             </FormItem>
           </TabPane>
         </Tabs>
@@ -44,7 +76,7 @@ function Login(): JSX.Element {
             className={styles.submit}
             type="primary"
             htmlType="submit"
-            // loading={submitting}
+            loading={submitting}
           >
             登录
           </Button>
@@ -54,4 +86,4 @@ function Login(): JSX.Element {
   );
 }
 
-export default Login;
+export default Form.create()(Login);

@@ -3,7 +3,7 @@
     "outDir": "./dist/",
     "baseUrl": "./",
     "paths": {
-      "@": ["src/"]
+      "src": ["src/"]
     },
     "sourceMap": true,
     "noImplicitAny": true,

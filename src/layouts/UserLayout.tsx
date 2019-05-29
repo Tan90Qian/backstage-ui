@@ -2,10 +2,10 @@ import React from 'react';
 import { Link, Switch, Route, Redirect } from 'react-router-dom';
 import DocumentTitle from 'react-document-title';
 
-import { getPageQuery, getQueryPath } from '../utils/utils';
-import Login from '../routes/User/Login';
+import { RouteComponentProps } from 'src/declares/Component';
 
-import styles from './Userlayout.less';
+import { getRoutes, getPageQuery, getQueryPath, IRouteItem } from 'src/utils/utils';
+import styles from './UserLayout.less';
 
 function getLoginPathWithRedirectPath(): string {
   const params = getPageQuery();
@@ -15,12 +15,20 @@ function getLoginPathWithRedirectPath(): string {
   });
 }
 
-function getPageTitle(): string {
-  const title = '管理后台';
-  return title;
-}
+export default function UserLayout({
+  routerData,
+  location,
+  match,
+}: RouteComponentProps): React.FunctionComponentElement<DocumentTitle> {
+  function getPageTitle(): string {
+    const { pathname } = location;
+    let title = '管理后台';
+    if (routerData[pathname] && routerData[pathname].name) {
+      title = `${routerData[pathname].name} - 管理后台`;
+    }
+    return title;
+  }
 
-export default function UerLayout(): JSX.Element {
   return (
     <DocumentTitle title={getPageTitle()}>
       <div className={styles.container}>
@@ -33,7 +41,14 @@ export default function UerLayout(): JSX.Element {
             </div>
           </div>
           <Switch>
-            <Route path="/user/login" component={Login} />
+            {getRoutes(match.path, routerData).map((item: IRouteItem) => (
+              <Route
+                key={item.key}
+                path={item.path}
+                component={item.component}
+                exact={item.exact}
+              />
+            ))}
             <Redirect from="/user" to={getLoginPathWithRedirectPath()} />
           </Switch>
         </div>
