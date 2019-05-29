@@ -4,8 +4,6 @@ import { IRouterData, IRouterItem } from 'src/common/router';
 
 export interface IRouteItem extends IRouterItem {
   key: string;
-  path: string;
-  exact: boolean;
 }
 
 function getRelation(str1: string, str2: string): number {

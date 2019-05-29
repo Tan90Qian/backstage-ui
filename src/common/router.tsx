@@ -1,4 +1,5 @@
 import React, { createElement, ComponentType } from 'react';
+import { RouteProps } from 'react-router';
 import { Spin } from 'antd';
 import pathToRegexp from 'path-to-regexp';
 import Loadable from 'react-loadable';
@@ -15,10 +16,9 @@ interface IMenuData {
   [propName: string]: IMenuItem;
 }
 
-export interface IRouterItem {
+export interface IRouterItem extends RouteProps {
   name?: string;
   hideInBreadcrumb?: boolean;
-  component: ComponentType<any>;
 }
 
 export interface IRouterData {

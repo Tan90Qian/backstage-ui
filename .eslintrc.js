@@ -26,6 +26,7 @@ module.exports = {
     '@typescript-eslint/no-use-before-define': [0],
     '@typescript-eslint/explicit-function-return-type': [0],
     '@typescript-eslint/no-explicit-any': [0],
+    '@typescript-eslint/explicit-member-accessibility': [0],
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
   },

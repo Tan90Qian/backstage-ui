@@ -1,11 +1,7 @@
-import { match } from 'react-router';
-import { History } from 'history';
+import { RouteComponentProps } from 'react-router';
 
 import { IRouterData } from 'src/common/router';
 
-export interface RouteComponentProps {
+export interface RouteComponentProps extends RouteComponentProps {
   routerData: IRouterData;
-  location: Location;
-  match: match;
-  history: History;
 }
