@@ -1,6 +1,6 @@
 module.exports = {
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint'],
+  plugins: ['@typescript-eslint', 'react-hooks'],
   extends: [
     'airbnb',
     'plugin:@typescript-eslint/recommended',
@@ -26,6 +26,8 @@ module.exports = {
     '@typescript-eslint/no-use-before-define': [0],
     '@typescript-eslint/explicit-function-return-type': [0],
     '@typescript-eslint/no-explicit-any': [0],
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'warn',
   },
   parserOptions: {
     project: 'tsconfig.json',

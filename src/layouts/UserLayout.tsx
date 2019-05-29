@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, Switch, Route, Redirect } from 'react-router-dom';
 import DocumentTitle from 'react-document-title';
 
-import { IRouteComponentProps } from 'src/declares/RouteComponent';
+import { RouteComponentProps } from 'src/declares/Component';
 
 import { getRoutes, getPageQuery, getQueryPath, IRouteItem } from 'src/utils/utils';
 import styles from './UserLayout.less';
@@ -15,11 +15,11 @@ function getLoginPathWithRedirectPath(): string {
   });
 }
 
-export default function UerLayout({
+export default function UserLayout({
   routerData,
   location,
   match,
-}: IRouteComponentProps): React.FunctionComponentElement<DocumentTitle> {
+}: RouteComponentProps): React.FunctionComponentElement<DocumentTitle> {
   function getPageTitle(): string {
     const { pathname } = location;
     let title = '管理后台';
