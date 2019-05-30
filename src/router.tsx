@@ -15,6 +15,7 @@ const { AuthorizedRoute } = Authorized;
 function RouterConfig(): FunctionComponentElement<React.ComponentClass> {
   const routerData = getRouterData();
   const UserLayout = routerData['/user'].component;
+  const DemoLayout = routerData['/demo'].component;
   const BasicLayout = routerData['/'].component;
   setInterceptorsWithHistory(createHashHistory());
   return (
@@ -22,6 +23,7 @@ function RouterConfig(): FunctionComponentElement<React.ComponentClass> {
       <Router>
         <Switch>
           <Route path="/user" component={UserLayout} />
+          <Route path="/demo" component={DemoLayout} />
           <AuthorizedRoute
             path="/"
             render={props => <BasicLayout {...props} />}

@@ -3,7 +3,7 @@ import { CURRENT } from './renderAuthorize';
 import { authorityType, IReactComponent } from './utils';
 
 export interface Check {
-  (authority: authorityType, target: IReactComponent, Exception: IReactComponent): IReactComponent;
+  (authority: authorityType, target: IReactComponent, Exception?: IReactComponent): IReactComponent;
 }
 
 /**
@@ -18,7 +18,7 @@ const checkPermissions = (
   authority: authorityType,
   currentAuthority: string,
   target: IReactComponent,
-  Exception: IReactComponent
+  Exception?: IReactComponent
 ) => {
   // 没有判定权限.默认查看所有
   // Retirement authority, return target;

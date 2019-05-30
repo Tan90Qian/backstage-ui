@@ -8,4 +8,6 @@ Authorized.Secured = Secured;
 Authorized.AuthorizedRoute = AuthorizedRoute;
 Authorized.check = check;
 
+export type AuthorizedType = typeof Authorized;
+
 export default renderAuthorize(Authorized);

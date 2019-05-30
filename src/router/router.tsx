@@ -86,6 +86,12 @@ function getRouterData() {
     '/user/login': {
       component: dynamicWrapper(() => import('src/pages/User/Login')),
     },
+    '/demo': {
+      component: dynamicWrapper(() => import('src/layouts/DemoLayout')),
+    },
+    '/demo/spike1': {
+      component: dynamicWrapper(() => import('src/pages/Demo/Spike1')),
+    },
   };
   const menuData: IMenuData = getFlatMenuData(getMenuData());
   const routerData: IRouterData = {};
