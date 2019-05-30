@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { AxiosResponse } from 'axios';
 import { stringify } from 'qs';
-import { Layout } from 'antd';
+import { Layout, message } from 'antd';
 import { Route, Redirect, Switch, RedirectProps } from 'react-router-dom';
 import enquireJs from 'enquire.js';
 import pathToRegexp from 'path-to-regexp';
@@ -13,8 +14,7 @@ import Authorized, { reloadAuthorized } from 'src/utils/Authorized';
 import { getRoutes } from 'src/utils/utils';
 import logo from 'src/assets/logo.jpg';
 
-import { getCurrentUser } from 'src/services/user';
-import { logout } from 'src/services/api';
+import { logout, getCurrentUser } from 'src/services/user';
 
 import { getMenuData, IMenuItem } from 'src/router/menu';
 import GlobalHeader from 'src/components/GlobalHeader';
@@ -24,6 +24,7 @@ import NotFound from 'src/pages/Exception/404';
 
 import { IRouterData, IRouterItem } from 'src/router/router';
 import { RouteComponentProps } from 'src/declares/Component';
+import { IResponseData } from 'src/declares/Request';
 
 const { Content, Header, Footer } = Layout;
 const { AuthorizedRoute } = Authorized;
@@ -91,15 +92,15 @@ export default function BasicLayout(
   const [isMobile, setIsMobile] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
 
-  const [currentUser, setCurrentUser] = useState('');
+  const [currentUser, setCurrentUser] = useState({});
 
   function handleMenuCollapse(isCollapsed: boolean) {
     setCollapsed(isCollapsed);
   }
 
-  function handleMenuClick(key: string) {
+  function handleMenuClick({ key }: { key: string }) {
     if (key === 'logout') {
-      logout().then(res => {
+      logout().then((res: AxiosResponse<IResponseData>) => {
         if (res.data.code === 0) {
           localStorage.removeItem('Atoken');
           setAuthority('guest');
@@ -135,11 +136,10 @@ export default function BasicLayout(
 
   useEffect(() => {
     /* 获取用户信息 */
-    getCurrentUser().then(res => {
-      const { data } = res;
-      const { code, userName } = data;
+    getCurrentUser().then((res: AxiosResponse<IResponseData>) => {
+      const { code, data }: { code: number; data: object } = res.data;
       if (code === 0) {
-        setCurrentUser(userName);
+        setCurrentUser(data);
       } else {
         setAuthority('guest');
         reloadAuthorized();

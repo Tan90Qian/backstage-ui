@@ -2,12 +2,14 @@ import React, { FormEvent, useState, FunctionComponentElement } from 'react';
 import { Form, Input, Icon, Button, Tabs, message } from 'antd';
 import { InputProps } from 'antd/lib/input';
 import { WrappedFormInternalProps } from 'antd/lib/form/Form';
+import { AxiosResponse } from 'axios';
 
 import { RouteComponentProps } from 'src/declares/Component';
+import { IResponseData } from 'src/declares/Request';
 import { setAuthority } from 'src/utils/authority';
 import { reloadAuthorized } from 'src/utils/Authorized';
 import { getPageQuery } from 'src/utils/utils';
-import { login } from 'src/services/api';
+import { login } from 'src/services/user';
 import styles from './Login.less';
 
 const FormItem = Form.Item;
@@ -32,11 +34,15 @@ function Login(props: ComponentProps): FunctionComponentElement<HTMLElement> {
       if (!err) {
         setSubmitting(true);
         login(value)
-          .then(res => {
-            // console.log('res', res);
+          .then((res: AxiosResponse<IResponseData>) => {
+            console.log('res', res);
             setSubmitting(false);
-            if (res.data.code === 0) {
-              setAuthority('user');
+            const {
+              code,
+              data: { authority },
+            } = res.data;
+            if (code === 0) {
+              setAuthority(authority);
               reloadAuthorized();
               const urlParams = new URL(window.location.href);
               const params = getPageQuery();
@@ -59,7 +65,7 @@ function Login(props: ComponentProps): FunctionComponentElement<HTMLElement> {
             }
           })
           .catch(error => {
-            // console.log('error', error);
+            console.log('error', error);
             message.error(error.data.msg || '提交失败');
             setSubmitting(false);
           });

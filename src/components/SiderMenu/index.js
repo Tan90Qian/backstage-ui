@@ -3,6 +3,7 @@ import React from 'react';
 import DrawerMenu from 'rc-drawer';
 import SiderMenu from './SiderMenu';
 
+// TODO 从rc基础组件改为antd的Drawer并改造为tsx
 const SiderMenuWrapper = props => {
   const { isMobile, collapsed } = props;
   return isMobile ? (
