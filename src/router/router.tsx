@@ -4,6 +4,8 @@ import { Spin } from 'antd';
 import pathToRegexp from 'path-to-regexp';
 import Loadable from 'react-loadable';
 
+import { authorityType } from 'src/components/Authorized/utils';
+
 import { getMenuData, IMenuItem } from './menu';
 
 type Pick<T, K extends keyof T> = { [P in K]?: T[P] };
@@ -19,6 +21,7 @@ interface IMenuData {
 export interface IRouterItem extends RouteProps {
   name?: string;
   hideInBreadcrumb?: boolean;
+  authority?: authorityType;
 }
 
 export interface IRouterData {
@@ -66,13 +69,22 @@ function getFlatMenuData(menus: IMenuItem[]) {
 function getRouterData() {
   const routerConfig: IRouterData = {
     '/': {
-      component: dynamicWrapper(() => import('../layouts/BasicLayout')),
+      component: dynamicWrapper(() => import('src/layouts/BasicLayout')),
+    },
+    '/exception/404': {
+      component: dynamicWrapper(() => import('src/pages/Exception/404')),
+    },
+    '/exception/403': {
+      component: dynamicWrapper(() => import('src/pages/Exception/403')),
+    },
+    '/exception/500': {
+      component: dynamicWrapper(() => import('src/pages/Exception/500')),
     },
     '/user': {
-      component: dynamicWrapper(() => import('../layouts/UserLayout')),
+      component: dynamicWrapper(() => import('src/layouts/UserLayout')),
     },
     '/user/login': {
-      component: dynamicWrapper(() => import('../routes/User/Login')),
+      component: dynamicWrapper(() => import('src/pages/User/Login')),
     },
   };
   const menuData: IMenuData = getFlatMenuData(getMenuData());
@@ -92,6 +104,7 @@ function getRouterData() {
     router = {
       ...router,
       name: router.name || menuItem.name,
+      authority: router.authority || menuItem.authority,
       hideInBreadcrumb: router.hideInBreadcrumb || menuItem.hideInBreadcrumb,
     };
     routerData[path] = router;

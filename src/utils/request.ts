@@ -34,7 +34,7 @@ export function setInterceptorsWithHistory(history: History) {
   }
 
   function errCallback(err: AxiosError) {
-    console.log('interceptor', err);
+    // console.log('interceptor', err);
     const { status, statusText } = err.response;
     const { url } = err.config;
     const errortext = codeMessage[status] || statusText;

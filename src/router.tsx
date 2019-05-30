@@ -7,7 +7,7 @@ import zhCN from 'antd/lib/locale-provider/zh_CN';
 
 import Authorized from './utils/Authorized';
 import { getQueryPath } from './utils/utils';
-import { getRouterData } from './common/router';
+import { getRouterData } from './router/router';
 import { setInterceptorsWithHistory } from './utils/request';
 
 const { AuthorizedRoute } = Authorized;

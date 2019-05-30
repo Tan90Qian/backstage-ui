@@ -1,6 +1,6 @@
 import { parse, stringify } from 'qs';
 
-import { IRouterData, IRouterItem } from 'src/common/router';
+import { IRouterData, IRouterItem } from 'src/router/router';
 
 export interface IRouteItem extends IRouterItem {
   key: string;

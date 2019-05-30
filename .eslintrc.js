@@ -16,6 +16,7 @@ module.exports = {
     jasmine: true,
   },
   rules: {
+    'no-restricted-syntax': [0],
     'no-use-before-define': [0],
     'react/jsx-filename-extension': [1, { extensions: ['.ts', '.tsx'] }],
     'react/jsx-one-expression-per-line': [0],
