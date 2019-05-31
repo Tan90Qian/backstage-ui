@@ -1,17 +1,15 @@
 import React, { FunctionComponentElement } from 'react';
 
-import { HashRouter as Router, Route, Switch } from 'react-router-dom';
-import { createHashHistory } from 'history';
+import { Route, Switch } from 'react-router-dom';
 import { LocaleProvider } from 'antd';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
 
 import Authorized from './utils/Authorized';
+import { Router } from './utils/history';
 import { getQueryPath } from './utils/utils';
 import { getRouterData } from './router/router';
 
 const { AuthorizedRoute } = Authorized;
-
-export const history = createHashHistory();
 
 function RouterConfig(): FunctionComponentElement<React.ComponentClass> {
   const routerData = getRouterData();

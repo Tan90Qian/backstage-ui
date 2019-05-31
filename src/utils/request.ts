@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
 import { notification } from 'antd';
 
 import { IResponseData } from 'src/declares/Request';
-import { history } from 'src/router';
+import { history } from './history';
 
 interface CodeKind {
   [code: number]: string;
