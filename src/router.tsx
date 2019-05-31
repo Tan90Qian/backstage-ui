@@ -8,16 +8,16 @@ import zhCN from 'antd/lib/locale-provider/zh_CN';
 import Authorized from './utils/Authorized';
 import { getQueryPath } from './utils/utils';
 import { getRouterData } from './router/router';
-import { setInterceptorsWithHistory } from './utils/request';
 
 const { AuthorizedRoute } = Authorized;
+
+export const history = createHashHistory();
 
 function RouterConfig(): FunctionComponentElement<React.ComponentClass> {
   const routerData = getRouterData();
   const UserLayout = routerData['/user'].component;
   const DemoLayout = routerData['/demo'].component;
   const BasicLayout = routerData['/'].component;
-  setInterceptorsWithHistory(createHashHistory());
   return (
     <LocaleProvider locale={zhCN}>
       <Router>

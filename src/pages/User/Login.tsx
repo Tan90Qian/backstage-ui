@@ -2,10 +2,8 @@ import React, { FormEvent, useState, FunctionComponentElement } from 'react';
 import { Form, Input, Icon, Button, Tabs, message } from 'antd';
 import { InputProps } from 'antd/lib/input';
 import { WrappedFormInternalProps } from 'antd/lib/form/Form';
-import { AxiosResponse } from 'axios';
 
 import { RouteComponentProps } from 'src/declares/Component';
-import { IResponseData } from 'src/declares/Request';
 import { setAuthority } from 'src/utils/authority';
 import { reloadAuthorized } from 'src/utils/Authorized';
 import { getPageQuery } from 'src/utils/utils';
@@ -34,7 +32,7 @@ function Login(props: ComponentProps): FunctionComponentElement<HTMLElement> {
       if (!err) {
         setSubmitting(true);
         login(value)
-          .then((res: AxiosResponse<IResponseData>) => {
+          .then(res => {
             console.log('res', res);
             setSubmitting(false);
             const {

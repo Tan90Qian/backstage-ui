@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { AxiosResponse } from 'axios';
-import { stringify } from 'qs';
-import { Layout, message } from 'antd';
+import { Layout } from 'antd';
 import { Route, Redirect, Switch, RedirectProps } from 'react-router-dom';
 import enquireJs from 'enquire.js';
 import pathToRegexp from 'path-to-regexp';
@@ -9,8 +7,7 @@ import DocumentTitle from 'react-document-title';
 import { ContainerQuery } from 'react-container-query';
 import classNames from 'classnames';
 
-import { setAuthority } from 'src/utils/authority';
-import Authorized, { reloadAuthorized } from 'src/utils/Authorized';
+import Authorized from 'src/utils/Authorized';
 import { getRoutes } from 'src/utils/utils';
 import logo from 'src/assets/logo.jpg';
 
@@ -24,7 +21,7 @@ import NotFound from 'src/pages/Exception/404';
 
 import { IRouterData, IRouterItem } from 'src/router/router';
 import { RouteComponentProps } from 'src/declares/Component';
-import { IResponseData } from 'src/declares/Request';
+import { doLogout } from 'src/services/_utils';
 
 const { Content, Header, Footer } = Layout;
 const { AuthorizedRoute } = Authorized;
@@ -100,17 +97,9 @@ export default function BasicLayout(
 
   function handleMenuClick({ key }: { key: string }) {
     if (key === 'logout') {
-      logout().then((res: AxiosResponse<IResponseData>) => {
+      logout().then(res => {
         if (res.data.code === 0) {
-          localStorage.removeItem('Atoken');
-          setAuthority('guest');
-          reloadAuthorized();
-          history.push({
-            pathname: '/user/login',
-            search: stringify({
-              redirect: window.location.href,
-            }),
-          });
+          doLogout(history);
         }
       });
     }
@@ -136,19 +125,12 @@ export default function BasicLayout(
 
   useEffect(() => {
     /* 获取用户信息 */
-    getCurrentUser().then((res: AxiosResponse<IResponseData>) => {
+    getCurrentUser().then(res => {
       const { code, data }: { code: number; data: object } = res.data;
       if (code === 0) {
         setCurrentUser(data);
       } else {
-        setAuthority('guest');
-        reloadAuthorized();
-        history.push({
-          pathname: '/user/login',
-          search: stringify({
-            redirect: window.location.href,
-          }),
-        });
+        doLogout(history);
       }
     });
   }, [history]);
