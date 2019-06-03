@@ -1,8 +1,8 @@
 import { authorityType } from 'src/components/Authorized/utils';
 
 export interface IMenuItem {
-  name: string;
   path: string;
+  name?: string;
   icon?: string;
   hideInMenu?: boolean;
   hideInBreadcrumb?: boolean;

@@ -5,15 +5,15 @@
   "private": true,
   "author": "Tan90Qian <1436811949@qq.com>",
   "scripts": {
-    "start": "cross-env PROXY=true webpack-dev-server --inline --progress --config config/webpack.dev.conf.js",
-    "start:no-proxy": "webpack-dev-server --inline --progress --config config/webpack.dev.conf.js",
+    "start": "cross-env MOCK=true webpack-dev-server --inline --progress --config config/webpack.dev.conf.js",
+    "start:no-mock": "webpack-dev-server --inline --progress --config config/webpack.dev.conf.js",
     "build": "node config/build.js",
     "lint": "eslint --ext .ts,.tsx src && npm run lint-style",
     "lint:fix": "eslint --fix --ext .ts,.tsx src && npm run lint-style:fix",
     "lint-style": "stylelint \"src/**/*.{less,css}\"",
     "lint-style:fix": "stylelint \"src/**/*.{less,css}\" --fix",
     "prettier": "prettier --write \"src/**/*.{ts,tsx,less,css}\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "dependencies": {
     "@types/axios": "^0.14.0",
@@ -45,6 +45,7 @@
     "react-router-dom": "^5.0.0"
   },
   "devDependencies": {
+    "@types/jest": "^24.0.13",
     "@typescript-eslint/eslint-plugin": "^1.9.0",
     "@typescript-eslint/parser": "^1.9.0",
     "autoprefixer": "^9.5.1",
@@ -62,6 +63,8 @@
     "file-loader": "^3.0.1",
     "html-webpack-plugin": "^3.2.0",
     "husky": "^2.3.0",
+    "jest": "^24.8.0",
+    "jest-transform-stub": "^2.0.0",
     "less": "^3.9.0",
     "less-loader": "^5.0.0",
     "lint-staged": "^8.1.7",
@@ -78,6 +81,7 @@
     "stylelint-order": "^3.0.0",
     "stylelint-webpack-plugin": "^0.10.5",
     "ts-import-plugin": "^1.5.5",
+    "ts-jest": "^24.0.2",
     "ts-loader": "^6.0.1",
     "typescript": "^3.4.5",
     "uglifyjs-webpack-plugin": "^2.1.3",

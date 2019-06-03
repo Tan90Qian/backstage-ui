@@ -5,9 +5,9 @@ import SetupMock from '../mock';
 
 import './index.less';
 
-const useProxy = process.env.PROXY === 'true';
+const useMock = process.env.MOCK === 'true';
 
-if (useProxy) {
+if (useMock) {
   SetupMock();
 }
 

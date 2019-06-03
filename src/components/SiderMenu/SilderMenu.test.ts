@@ -1,7 +1,9 @@
+import { IMenuItem } from 'src/router/menu';
+
 import { urlToList } from '../_utils/pathTools';
 import { getFlatMenuKeys, getMenuMatchKeys } from './SiderMenu';
 
-const menu = [
+const menu: IMenuItem[] = [
   {
     path: '/dashboard',
     children: [
