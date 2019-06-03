@@ -14,7 +14,7 @@ const baseWebpackConfig = require('./webpack.base.conf');
 const webpackConfig = merge(baseWebpackConfig, {
   output: {
     path: path.resolve(__dirname, '..', 'dist'),
-    filename: 'index.[contenthash:8].js',
+    filename: 'js/index.[contenthash:8].js',
   },
   mode: 'production',
   plugins: [
@@ -49,7 +49,6 @@ const webpackConfig = merge(baseWebpackConfig, {
           test: /[\\/]node_modules[\\/]/,
           name: 'vendors',
           chunks: 'all',
-          filename: 'vendors.[contenthash:8].js',
         },
       },
     },
@@ -57,8 +56,8 @@ const webpackConfig = merge(baseWebpackConfig, {
   },
   performance: {
     hints: 'error',
-    maxEntrypointSize: 1000000,
-    maxAssetSize: 1000000,
+    maxEntrypointSize: 2000000,
+    maxAssetSize: 2000000,
   },
 });
 

@@ -4,7 +4,6 @@ const path = require('path');
 module.exports = {
   dev: {
     assetsPublicPath: '/',
-    assetsSubDirectory: 'static',
     proxyTable: {},
     host: 'localhost',
     port: 8000,
@@ -13,7 +12,6 @@ module.exports = {
   },
   build: {
     assetsPublicPath: './',
-    assetsSubDirectory: 'static',
     assetsRoot: path.resolve(__dirname, '..', 'dist'),
   },
 };

@@ -17,7 +17,7 @@ const { SubMenu } = Menu;
 
 type Logo = string | IconComponent<IconProps>;
 
-interface HandleCollapse {
+export interface HandleCollapse {
   (isCollapsed: boolean): void;
 }
 

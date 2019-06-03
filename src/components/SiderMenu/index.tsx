@@ -1,16 +1,15 @@
 import 'rc-drawer/assets/index.css';
-import React from 'react';
+import React, { FunctionComponentElement } from 'react';
 import DrawerMenu from 'rc-drawer';
-import SiderMenu from './SiderMenu';
+import SiderMenu, { SiderMenuProps } from './SiderMenu';
 
 // TODO 从rc基础组件改为antd的Drawer并改造为tsx
-const SiderMenuWrapper = props => {
+const SiderMenuWrapper = (props: SiderMenuProps): FunctionComponentElement<any> => {
   const { isMobile, collapsed } = props;
   return isMobile ? (
     <DrawerMenu
       getContainer={null}
       level={null}
-      handleChild={<i className="drawer-handle-icon" />}
       onHandleClick={() => {
         props.onCollapse(!collapsed);
       }}
