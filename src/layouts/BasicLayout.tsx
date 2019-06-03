@@ -19,7 +19,7 @@ import { getMenuData, IMenuItem } from 'src/router/menu';
 import GlobalHeader from 'src/components/GlobalHeader';
 import GlobalFooter from 'src/components/GlobalFooter';
 import SiderMenu from 'src/components/SiderMenu';
-import { isMobileContext } from 'src/context/basicContext';
+import { isMobileContext, breadcrumbContext } from 'src/context/basicContext';
 import NotFound from 'src/pages/Exception/404';
 
 import { RouteComponentProps } from 'src/declares/Component';
@@ -89,8 +89,8 @@ export default function BasicLayout(
 
   const [isMobile, setIsMobile] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
-
   const [currentUser, setCurrentUser] = useState({});
+  const [breadcrumbNameMap, setBreadcrumbNameMap] = useState({});
 
   function handleMenuCollapse(isCollapsed: boolean) {
     setCollapsed(isCollapsed);
@@ -123,6 +123,10 @@ export default function BasicLayout(
       enquireJs.unregister(mobileQuery, handler);
     };
   }, []);
+
+  useEffect(() => {
+    setBreadcrumbNameMap(getBreadcrumbNameMap(getMenuData(), routerData));
+  }, [routerData]);
 
   useEffect(() => {
     /* 获取用户信息 */
@@ -202,12 +206,14 @@ export default function BasicLayout(
   );
 
   return (
-    <isMobileContext.Provider value={isMobile}>
-      <DocumentTitle title={getPageTitle()}>
-        <ContainerQuery query={query}>
-          {params => <div className={classNames(params)}>{layout}</div>}
-        </ContainerQuery>
-      </DocumentTitle>
-    </isMobileContext.Provider>
+    <breadcrumbContext.Provider value={{ breadcrumbNameMap, location }}>
+      <isMobileContext.Provider value={isMobile}>
+        <DocumentTitle title={getPageTitle()}>
+          <ContainerQuery query={query}>
+            {params => <div className={classNames(params)}>{layout}</div>}
+          </ContainerQuery>
+        </DocumentTitle>
+      </isMobileContext.Provider>
+    </breadcrumbContext.Provider>
   );
 }
