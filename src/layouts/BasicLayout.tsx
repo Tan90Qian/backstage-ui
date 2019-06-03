@@ -11,17 +11,18 @@ import Authorized from 'src/utils/Authorized';
 import { getRoutes } from 'src/utils/utils';
 import logo from 'src/assets/logo.jpg';
 
+import { doLogout } from 'src/services/_utils';
 import { logout, getCurrentUser } from 'src/services/user';
 
+import { IRouterData, IRouterItem } from 'src/router/router';
 import { getMenuData, IMenuItem } from 'src/router/menu';
 import GlobalHeader from 'src/components/GlobalHeader';
 import GlobalFooter from 'src/components/GlobalFooter';
 import SiderMenu from 'src/components/SiderMenu';
+import { isMobileContext } from 'src/context/basicContext';
 import NotFound from 'src/pages/Exception/404';
 
-import { IRouterData, IRouterItem } from 'src/router/router';
 import { RouteComponentProps } from 'src/declares/Component';
-import { doLogout } from 'src/services/_utils';
 
 const { Content, Header, Footer } = Layout;
 const { AuthorizedRoute } = Authorized;
@@ -201,10 +202,12 @@ export default function BasicLayout(
   );
 
   return (
-    <DocumentTitle title={getPageTitle()}>
-      <ContainerQuery query={query}>
-        {params => <div className={classNames(params)}>{layout}</div>}
-      </ContainerQuery>
-    </DocumentTitle>
+    <isMobileContext.Provider value={isMobile}>
+      <DocumentTitle title={getPageTitle()}>
+        <ContainerQuery query={query}>
+          {params => <div className={classNames(params)}>{layout}</div>}
+        </ContainerQuery>
+      </DocumentTitle>
+    </isMobileContext.Provider>
   );
 }
