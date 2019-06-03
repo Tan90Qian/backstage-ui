@@ -176,7 +176,7 @@ const Ellipsis = (props: IEllipsisProps) => {
   }
 
   useEffect(() => {
-    if (node) {
+    if (node && node.current) {
       computeLine();
     }
   }, [computeLine, lines, node]);
