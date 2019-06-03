@@ -8,15 +8,6 @@ const config = require('./config');
 
 const devMode = process.env.NODE_ENV !== 'production';
 
-function assetsPath(_path) {
-  const assetsSubDirectory =
-    process.env.NODE_ENV === 'production'
-      ? config.build.assetsSubDirectory
-      : config.dev.assetsSubDirectory;
-
-  return path.posix.join(assetsSubDirectory, _path);
-}
-
 function resolve(dir) {
   return path.join(__dirname, '..', dir);
 }
@@ -37,7 +28,7 @@ module.exports = {
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
     alias: {
-      'src': resolve('src'),
+      src: resolve('src'),
     },
   },
   module: {
@@ -87,6 +78,7 @@ module.exports = {
             options: {
               modules: true,
               localIdentName: '[local]_[hash:base64:8]',
+              importLoaders: 1,
             },
           },
           'postcss-loader',
@@ -101,6 +93,7 @@ module.exports = {
             options: {
               modules: true,
               localIdentName: '[local]_[hash:base64:8]',
+              importLoaders: 2,
             },
           },
           'postcss-loader',
@@ -117,7 +110,12 @@ module.exports = {
         test: /\.less$/,
         use: [
           devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
-          'css-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 2,
+            },
+          },
           'postcss-loader',
           {
             loader: 'less-loader',
@@ -133,7 +131,7 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: 8192,
-          name: assetsPath('img/[name].[hash:7].[ext]'),
+          name: 'img/[name].[hash:7].[ext]',
         },
       },
       {
@@ -141,7 +139,7 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: 8192,
-          name: assetsPath('media/[name].[hash:7].[ext]'),
+          name: 'media/[name].[hash:7].[ext]',
         },
       },
       {
@@ -149,7 +147,7 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: 8192,
-          name: assetsPath('fonts/[name].[hash:7].[ext]'),
+          name: 'fonts/[name].[hash:7].[ext]',
         },
       },
     ],
@@ -159,7 +157,7 @@ module.exports = {
       files: ['**/*.{htm,html,css,less}'],
     }),
     new MiniCssExtractPlugin({
-      filename: devMode ? '[name].css' : '[name].[contenthash:8].css',
+      filename: devMode ? 'css/[name].css' : 'css/[name].[contenthash:8].css',
     }),
   ],
 };

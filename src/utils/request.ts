@@ -1,6 +1,8 @@
 import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
-import { History } from 'history';
 import { notification } from 'antd';
+
+import { IResponseData } from 'src/declares/Request';
+import { history } from './history';
 
 interface CodeKind {
   [code: number]: string;
@@ -28,40 +30,37 @@ const defaultConfig: AxiosRequestConfig = {};
 
 const request = axios.create(defaultConfig);
 
-export function setInterceptorsWithHistory(history: History) {
-  function successCallback(response: AxiosResponse) {
-    return response;
-  }
-
-  function errCallback(err: AxiosError) {
-    console.log('interceptor', err);
-    const { status, statusText } = err.response;
-    const { url } = err.config;
-    const errortext = codeMessage[status] || statusText;
-
-    notification.error({
-      message: `请求错误 ${status}: ${url}`,
-      description: errortext,
-    });
-
-    if (status === 403) {
-      history.push('/exception/403');
-      return err.response;
-    }
-    if (status >= 404 && status < 422) {
-      history.push('/exception/404');
-      return err.response;
-    }
-    if (status >= 500 && status <= 504) {
-      history.push('/exception/500');
-      return err.response;
-    }
-    return Promise.reject(err.response);
-  }
-
-  request.interceptors.response.use(successCallback, errCallback);
+function successCallback(response: AxiosResponse<IResponseData>) {
+  return response;
 }
+
+function errCallback(err: AxiosError) {
+  const { status, statusText } = err.response;
+  const { url } = err.config;
+  const errortext = codeMessage[status] || statusText;
+
+  notification.error({
+    message: `请求错误 ${status}: ${url}`,
+    description: errortext,
+  });
+
+  if (status === 403) {
+    history.push('/exception/403');
+    return err.response;
+  }
+  if (status >= 404 && status < 422) {
+    history.push('/exception/404');
+    return err.response;
+  }
+  if (status >= 500 && status <= 504) {
+    history.push('/exception/500');
+    return err.response;
+  }
+  return Promise.reject(err.response);
+}
+
+request.interceptors.response.use(successCallback, errCallback);
 
 export default request;
 
-export { AxiosRequestConfig };
+export { AxiosRequestConfig, history };

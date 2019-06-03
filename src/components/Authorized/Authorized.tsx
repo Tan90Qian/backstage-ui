@@ -12,11 +12,11 @@ interface AuthorizedProps {
 }
 
 class Authorized extends React.Component<AuthorizedProps, any> {
-  public static Secured: Secured;
+  static Secured: Secured;
 
-  public static AuthorizedRoute: AuthorizedRoute;
+  static AuthorizedRoute: AuthorizedRoute;
 
-  public static check: Check;
+  static check: Check;
 
   render() {
     const { children, authority, noMatch = null } = this.props;

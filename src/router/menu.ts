@@ -1,10 +1,15 @@
+import { authorityType } from 'src/components/Authorized/utils';
+
 export interface IMenuItem {
   name: string;
   path: string;
   icon?: string;
   hideInMenu?: boolean;
   hideInBreadcrumb?: boolean;
+  authority?: authorityType;
   children?: IMenuItem[];
+  target?: string;
+  key?: string;
 }
 
 const menuData: IMenuItem[] = [
@@ -25,11 +30,6 @@ const menuData: IMenuItem[] = [
       {
         name: '500',
         path: '500',
-      },
-      {
-        name: '触发异常',
-        path: 'trigger',
-        hideInMenu: true,
       },
     ],
   },
