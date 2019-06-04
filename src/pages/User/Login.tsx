@@ -33,7 +33,6 @@ function Login(props: ComponentProps): FunctionComponentElement<HTMLElement> {
         setSubmitting(true);
         login(value)
           .then(res => {
-            console.log('res', res);
             setSubmitting(false);
             const {
               code,
@@ -63,7 +62,6 @@ function Login(props: ComponentProps): FunctionComponentElement<HTMLElement> {
             }
           })
           .catch(error => {
-            console.log('error', error);
             message.error(error.data.msg || '提交失败');
             setSubmitting(false);
           });
