@@ -149,37 +149,36 @@ const Ellipsis = (props: IEllipsisProps) => {
   const shadow: RefObject<HTMLDivElement> = createRef();
   const shadowChildren: RefObject<HTMLDivElement> = createRef();
 
-  function computeLine() {
-    if (lines && !isSupportLineClamp) {
-      const newText = shadowChildren.current.innerText;
-      const lineHeight = parseInt(getComputedStyle(root.current).lineHeight, 10);
-      const targetHeight = lines * lineHeight;
-      content.current.style.height = `${targetHeight}px`;
-      const totalHeight = shadowChildren.current.offsetHeight;
-      const shadowNode = shadow.current.firstChild;
-
-      if (totalHeight <= targetHeight) {
-        setText(newText);
-        setTargetCount(newText.length);
-        return;
-      }
-
-      // bisection
-      const len = text.length;
-      const mid = Math.ceil(len / 2);
-
-      const count = bisection(targetHeight, mid, 0, len, text, shadowNode);
-
-      setText(newText);
-      setTargetCount(count);
-    }
-  }
-
   useEffect(() => {
+    function computeLine() {
+      if (lines && !isSupportLineClamp) {
+        const newText = shadowChildren.current.innerText;
+        const lineHeight = parseInt(getComputedStyle(root.current).lineHeight, 10);
+        const targetHeight = lines * lineHeight;
+        content.current.style.height = `${targetHeight}px`;
+        const totalHeight = shadowChildren.current.offsetHeight;
+        const shadowNode = shadow.current.firstChild;
+
+        if (totalHeight <= targetHeight) {
+          setText(newText);
+          setTargetCount(newText.length);
+          return;
+        }
+
+        // bisection
+        const len = newText.length;
+        const mid = Math.ceil(len / 2);
+
+        const count = bisection(targetHeight, mid, 0, len, newText, shadowNode);
+        setText(newText);
+        setTargetCount(count);
+      }
+    }
+
     if (node && node.current) {
       computeLine();
     }
-  }, [computeLine, lines, node]);
+  }, [lines, node, shadow, content, root, shadowChildren, text]);
 
   const cls = classNames(styles.ellipsis, className, {
     [styles.lines]: lines && !isSupportLineClamp,
