@@ -16,12 +16,10 @@
     "test": "jest"
   },
   "dependencies": {
-    "@types/axios": "^0.14.0",
     "@types/classnames": "^2.2.8",
     "@types/enquire.js": "^2.1.2",
     "@types/lodash": "^4.14.133",
     "@types/mockjs": "^1.0.2",
-    "@types/path-to-regexp": "^1.7.0",
     "@types/qs": "^6.5.3",
     "@types/react": "^16.8.19",
     "@types/react-document-title": "^2.0.3",
