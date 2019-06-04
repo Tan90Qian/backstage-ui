@@ -208,7 +208,7 @@ const Ellipsis = (props: IEllipsisProps) => {
     );
   }
 
-  const id = `antd-pro-ellipsis-${`${new Date().getTime()}${Math.floor(Math.random() * 100)}`}`;
+  const id = `ellipsis-${`${new Date().getTime()}${Math.floor(Math.random() * 100)}`}`;
 
   // support document.body.style.webkitLineClamp
   if (isSupportLineClamp) {

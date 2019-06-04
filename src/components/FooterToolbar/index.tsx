@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import classNames from 'classnames';
 
 import { isMobileContext } from 'src/context/basicContext';
@@ -12,12 +12,9 @@ interface FooterToolbarWrapperProps {
   className?: string;
 }
 
-interface FooterToolbarProps extends FooterToolbarWrapperProps {
-  isMobile: boolean;
-}
-
-const FooterToolbar = (props: FooterToolbarProps) => {
-  const { isMobile, children, className, extra, ...restProps } = props;
+const FooterToolbar = (props: FooterToolbarWrapperProps) => {
+  const { children, className, extra, ...restProps } = props;
+  const isMobile = useContext(isMobileContext);
   const [width, setWidth] = useState(undefined);
 
   function resizeFooterToolbar() {
@@ -49,10 +46,4 @@ const FooterToolbar = (props: FooterToolbarProps) => {
   );
 };
 
-export default function FooterToolbarWithContext(props: FooterToolbarWrapperProps) {
-  return (
-    <isMobileContext.Consumer>
-      {(isMobile: boolean) => <FooterToolbar isMobile={isMobile} {...props} />}
-    </isMobileContext.Consumer>
-  );
-}
+export default FooterToolbar;
