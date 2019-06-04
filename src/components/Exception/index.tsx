@@ -1,6 +1,7 @@
 import React, { createElement, SFC } from 'react';
 import classNames from 'classnames';
 import { Button } from 'antd';
+
 import config from './typeConfig';
 import styles from './index.less';
 

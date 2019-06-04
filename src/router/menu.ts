@@ -1,8 +1,10 @@
 import { authorityType } from 'src/components/Authorized/utils';
 
+import { isUrl } from '../utils/utils';
+
 export interface IMenuItem {
-  name: string;
   path: string;
+  name?: string;
   icon?: string;
   hideInMenu?: boolean;
   hideInBreadcrumb?: boolean;
@@ -47,6 +49,24 @@ const menuData: IMenuItem[] = [
   },
 ];
 
+function formatter(data: IMenuItem[], parentPath = '/', parentAuthority?: authorityType) {
+  return data.map(item => {
+    let { path } = item;
+    if (!isUrl(path)) {
+      path = parentPath + item.path;
+    }
+    const result = {
+      ...item,
+      path,
+      authority: item.authority || parentAuthority,
+    };
+    if (item.children) {
+      result.children = formatter(item.children, `${parentPath}${item.path}/`, item.authority);
+    }
+    return result;
+  });
+}
+
 export const getMenuData = (): IMenuItem[] => {
-  return menuData;
+  return formatter(menuData);
 };

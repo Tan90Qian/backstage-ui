@@ -1,7 +1,7 @@
-import { checkPermissions } from './CheckPermissions.js';
+import { checkPermissions } from './CheckPermissions';
 
-const target = 'ok';
-const error = 'error';
+const target: any = 'ok';
+const error: any = 'error';
 
 describe('test CheckPermissions', () => {
   it('Correct string permission authentication', () => {
@@ -33,23 +33,5 @@ describe('test CheckPermissions', () => {
   });
   it('Correct Function permission authentication', () => {
     expect(checkPermissions(() => true, 'guest', target, error)).toEqual('ok');
-  });
-  it('authority is string, currentAuthority is array, return ok', () => {
-    expect(checkPermissions('user', ['user'], target, error)).toEqual('ok');
-  });
-  it('authority is string, currentAuthority is array, return ok', () => {
-    expect(checkPermissions('user', ['user', 'admin'], target, error)).toEqual('ok');
-  });
-  it('authority is array, currentAuthority is array, return ok', () => {
-    expect(checkPermissions(['user', 'admin'], ['user', 'admin'], target, error)).toEqual('ok');
-  });
-  it('Wrong Function permission authentication', () => {
-    expect(checkPermissions(() => false, ['user'], target, error)).toEqual('error');
-  });
-  it('Correct Function permission authentication', () => {
-    expect(checkPermissions(() => true, ['user'], target, error)).toEqual('ok');
-  });
-  it('authority is undefined , return ok', () => {
-    expect(checkPermissions(null, ['user'], target, error)).toEqual('ok');
   });
 });

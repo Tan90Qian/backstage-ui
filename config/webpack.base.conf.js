@@ -83,6 +83,21 @@ module.exports = {
           },
           'postcss-loader',
         ],
+        exclude: /node_modules/,
+      },
+      {
+        test: /\.css$/,
+        use: [
+          devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 1,
+            },
+          },
+          'postcss-loader',
+        ],
+        include: /node_modules/,
       },
       {
         test: /\.less$/,

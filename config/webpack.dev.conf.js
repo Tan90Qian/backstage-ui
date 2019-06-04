@@ -38,7 +38,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     new webpack.WatchIgnorePlugin([/\.js$/, /\.d\.ts$/]),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('development'),
-      'process.env.NO_PROXY': JSON.stringify(process.env.NO_PROXY),
+      'process.env.MOCK': JSON.stringify(process.env.MOCK),
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(),

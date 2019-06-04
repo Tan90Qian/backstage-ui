@@ -14,7 +14,8 @@
     "allowJs": true,
     "lib": ["dom", "es6", "es7"],
     "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true
   },
   "include": ["src/**/*", "types/**/*", "test/**/*"]
 }
