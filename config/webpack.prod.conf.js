@@ -7,6 +7,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const FilterWarningsPlugin = require('webpack-filter-warnings-plugin'); 
 
 const config = require('./config');
 const baseWebpackConfig = require('./webpack.base.conf');
@@ -40,6 +41,9 @@ const webpackConfig = merge(baseWebpackConfig, {
         ignore: ['.*'],
       },
     ]),
+    new FilterWarningsPlugin({
+      exclude: /mini-css-extract-plugin[^]*Conflicting order between:/
+    }),
     new BundleAnalyzerPlugin({ analyzerMode: 'static', openAnalyzer: false }),
   ],
   optimization: {
