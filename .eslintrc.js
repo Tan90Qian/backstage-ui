@@ -30,6 +30,10 @@ module.exports = {
     '@typescript-eslint/explicit-member-accessibility': [0],
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
+    'jsx-a11y/anchor-is-valid': [0],
+    'jsx-a11y/click-events-have-key-events': [0],
+    'jsx-a11y/no-static-element-interactions': [0],
+    'no-bitwise': [0],
   },
   parserOptions: {
     project: 'tsconfig.json',
