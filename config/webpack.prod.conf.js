@@ -7,9 +7,10 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-const FilterWarningsPlugin = require('webpack-filter-warnings-plugin'); 
+const FilterWarningsPlugin = require('webpack-filter-warnings-plugin');
 
 const config = require('./config');
+const ReportProgressBar = require('./reportProgress');
 const baseWebpackConfig = require('./webpack.base.conf');
 
 const webpackConfig = merge(baseWebpackConfig, {
@@ -18,7 +19,9 @@ const webpackConfig = merge(baseWebpackConfig, {
     filename: 'js/index.[contenthash:8].js',
   },
   mode: 'production',
+  bail: true,
   plugins: [
+    new ReportProgressBar(),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production'),
     }),
@@ -42,7 +45,7 @@ const webpackConfig = merge(baseWebpackConfig, {
       },
     ]),
     new FilterWarningsPlugin({
-      exclude: /mini-css-extract-plugin[^]*Conflicting order between:/
+      exclude: /mini-css-extract-plugin[^]*Conflicting order between:/,
     }),
     new BundleAnalyzerPlugin({ analyzerMode: 'static', openAnalyzer: false }),
   ],
