@@ -8,9 +8,10 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const FilterWarningsPlugin = require('webpack-filter-warnings-plugin');
+const ProgressBarPlugin = require('progress-bar-webpack-plugin');
+const chalk = require('chalk');
 
 const config = require('./config');
-const ReportProgressBar = require('./reportProgress');
 const baseWebpackConfig = require('./webpack.base.conf');
 
 const webpackConfig = merge(baseWebpackConfig, {
@@ -21,7 +22,13 @@ const webpackConfig = merge(baseWebpackConfig, {
   mode: 'production',
   bail: true,
   plugins: [
-    new ReportProgressBar(),
+    new ProgressBarPlugin({
+      format: `${chalk.cyan.bold('build')} :bar  ${chalk.green.bold(':percent')} ${chalk.blue.bold(
+        ':elapseds'
+      )}`,
+      incomplete: chalk.bgWhite(' '),
+      complete: chalk.bgGreen(' '),
+    }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production'),
     }),
