@@ -69,28 +69,44 @@ function getFlatMenuData(menus: IMenuItem[]) {
 function getRouterData() {
   const routerConfig: IRouterData = {
     '/': {
-      component: dynamicWrapper(() => import('src/layouts/BasicLayout')),
+      component: dynamicWrapper(
+        /* webpackChunkName: "basic" */ () => import('src/layouts/BasicLayout')
+      ),
     },
     '/exception/404': {
-      component: dynamicWrapper(() => import('src/pages/Exception/404')),
+      component: dynamicWrapper(
+        /* webpackChunkName: "exception" */ () => import('src/pages/Exception/404')
+      ),
     },
     '/exception/403': {
-      component: dynamicWrapper(() => import('src/pages/Exception/403')),
+      component: dynamicWrapper(
+        /* webpackChunkName: "exception" */ () => import('src/pages/Exception/403')
+      ),
     },
     '/exception/500': {
-      component: dynamicWrapper(() => import('src/pages/Exception/500')),
+      component: dynamicWrapper(
+        /* webpackChunkName: "exception" */ () => import('src/pages/Exception/500')
+      ),
     },
     '/user': {
-      component: dynamicWrapper(() => import('src/layouts/UserLayout')),
+      component: dynamicWrapper(
+        /* webpackChunkName: "user" */ () => import('src/layouts/UserLayout')
+      ),
     },
     '/user/login': {
-      component: dynamicWrapper(() => import('src/pages/User/Login')),
+      component: dynamicWrapper(
+        /* webpackChunkName: "user" */ () => import('src/pages/User/Login')
+      ),
     },
     '/demo': {
-      component: dynamicWrapper(() => import('src/layouts/DemoLayout')),
+      component: dynamicWrapper(
+        /* webpackChunkName: "demo" */ () => import('src/layouts/DemoLayout')
+      ),
     },
     '/demo/spike1': {
-      component: dynamicWrapper(() => import('src/pages/Demo/Spike1')),
+      component: dynamicWrapper(
+        /* webpackChunkName: "demo" */ () => import('src/pages/Demo/Spike1')
+      ),
     },
   };
   const menuData: IMenuData = getFlatMenuData(getMenuData());
@@ -99,14 +115,10 @@ function getRouterData() {
     const pathRegexp = pathToRegexp(path);
     const menuKey = Object.keys(menuData).find(key => pathRegexp.test(`${key}`));
     let menuItem: IMenuItemPicked = {};
-    // If menuKey is not empty
     if (menuKey) {
       menuItem = menuData[menuKey];
     }
     let router: IRouterItem = routerConfig[path];
-    // If you need to configure complex parameter routing,
-    // https://github.com/ant-design/ant-design-pro-site/blob/master/docs/router-and-nav.md#%E5%B8%A6%E5%8F%82%E6%95%B0%E7%9A%84%E8%B7%AF%E7%94%B1%E8%8F%9C%E5%8D%95
-    // eg . /list/:type/user/info/:id
     router = {
       ...router,
       name: router.name || menuItem.name,

@@ -18,6 +18,7 @@ const webpackConfig = merge(baseWebpackConfig, {
   output: {
     path: path.resolve(__dirname, '..', 'dist'),
     filename: 'js/index.[contenthash:8].js',
+    chunkFilename: 'js/[name].[contenthash:8].js',
   },
   mode: 'production',
   bail: true,
