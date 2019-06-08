@@ -55,7 +55,6 @@ const webpackConfig = merge(baseWebpackConfig, {
     new FilterWarningsPlugin({
       exclude: /mini-css-extract-plugin[^]*Conflicting order between:/,
     }),
-    new BundleAnalyzerPlugin({ analyzerMode: 'static', openAnalyzer: false }),
   ],
   optimization: {
     splitChunks: {
@@ -78,7 +77,9 @@ const webpackConfig = merge(baseWebpackConfig, {
 
 if (config.build.bundleAnalyzerReport) {
   const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-  webpackConfig.plugins.push(new BundleAnalyzerPlugin());
+  webpackConfig.plugins.push(
+    new BundleAnalyzerPlugin({ analyzerMode: 'static', openAnalyzer: false })
+  );
 }
 
 module.exports = webpackConfig;
