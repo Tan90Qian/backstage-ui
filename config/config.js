@@ -13,5 +13,6 @@ module.exports = {
   build: {
     assetsPublicPath: './',
     assetsRoot: path.resolve(__dirname, '..', 'dist'),
+    bundleAnalyzerReport: false,
   },
 };
