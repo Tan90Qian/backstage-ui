@@ -1,6 +1,6 @@
-import request, { AxiosRequestConfig } from 'src/utils/request';
+import request from 'src/utils/request';
 
-export async function login(params: AxiosRequestConfig) {
+export async function login(params: any) {
   return request('/Api/User/login', {
     method: 'post',
     data: params,
