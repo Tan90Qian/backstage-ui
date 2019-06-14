@@ -5,8 +5,7 @@ const chokidar = require('chokidar');
 
 function cleanCssModulesTyping(filePath) {
   const declarePath = `${filePath}.d.ts`;
-  const existDeclare = fs.existsSync(declarePath);
-  if (existDeclare) {
+  if (fs.existsSync(declarePath)) {
     fs.unlink(declarePath, err => {
       if (err) throw err;
       console.log('文件已删除');
@@ -55,7 +54,7 @@ function initialClean() {
   files.forEach(file => {
     const sourceFile = file.replace(/.d.ts$/, '');
     if (!fs.existsSync(sourceFile)) {
-      fs.unlink(sourceFile, err => {
+      fs.unlink(file, err => {
         if (err) throw err;
         console.log('文件已删除');
       });
