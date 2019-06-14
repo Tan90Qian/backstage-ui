@@ -1,11 +1,11 @@
 import React, { FunctionComponentElement } from 'react';
 
-import { Route, Switch } from 'react-router-dom';
+import { Router, Route, Switch } from 'react-router-dom';
 import { LocaleProvider } from 'antd';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
 
 import Authorized from './utils/Authorized';
-import { Router } from './utils/history';
+import { history } from './utils/history';
 import { getQueryPath } from './utils/utils';
 import { getRouterData } from './router/router';
 
@@ -18,7 +18,7 @@ function RouterConfig(): FunctionComponentElement<React.ComponentClass> {
   const BasicLayout = routerData['/'].component;
   return (
     <LocaleProvider locale={zhCN}>
-      <Router>
+      <Router history={history}>
         <Switch>
           <Route path="/user" component={UserLayout} />
           <Route path="/demo" component={DemoLayout} />

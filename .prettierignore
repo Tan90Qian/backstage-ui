@@ -2,4 +2,6 @@
 **/*.svg
 **/*.html
 **/*.ejs
+**/*.less.d.ts
+**/*.css.d.ts
 package.json

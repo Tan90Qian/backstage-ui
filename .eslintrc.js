@@ -20,6 +20,15 @@ module.exports = {
     'no-use-before-define': [0],
     'react/jsx-filename-extension': [1, { extensions: ['.ts', '.tsx'] }],
     'react/jsx-one-expression-per-line': [0],
+    "react/jsx-wrap-multilines": ["error", {
+      "declaration": "parens-new-line",
+      "assignment": "parens-new-line",
+      "return": "parens-new-line",
+      "arrow": "parens-new-line",
+      "condition": "parens-new-line",
+      "logical": "parens-new-line",
+      "prop": "ignore"
+    }],
     'import/no-unresolved': [0],
     'import/prefer-default-export': [0],
     'import/no-extraneous-dependencies': [0],
@@ -33,6 +42,7 @@ module.exports = {
     'jsx-a11y/anchor-is-valid': [0],
     'jsx-a11y/click-events-have-key-events': [0],
     'jsx-a11y/no-static-element-interactions': [0],
+    "jsx-a11y/no-noninteractive-element-interactions": [0],
     'no-bitwise': [0],
   },
   parserOptions: {
