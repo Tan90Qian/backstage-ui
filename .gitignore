@@ -6,6 +6,8 @@
 # production
 /dist
 /.vscode
+**/*.less.d.ts
+**/*.css.d.ts
 
 # misc
 .DS_Store

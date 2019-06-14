@@ -69,43 +69,43 @@ function getFlatMenuData(menus: IMenuItem[]) {
 function getRouterData() {
   const routerConfig: IRouterData = {
     '/': {
-      component: dynamicWrapper(
-        /* webpackChunkName: "basic" */ () => import('src/layouts/BasicLayout')
+      component: dynamicWrapper(() =>
+        import(/* webpackChunkName: "basic" */ 'src/layouts/BasicLayout')
       ),
     },
     '/exception/404': {
-      component: dynamicWrapper(
-        /* webpackChunkName: "exception" */ () => import('src/pages/Exception/404')
+      component: dynamicWrapper(() =>
+        import(/* webpackChunkName: "exception" */ 'src/pages/Exception/404')
       ),
     },
     '/exception/403': {
-      component: dynamicWrapper(
-        /* webpackChunkName: "exception" */ () => import('src/pages/Exception/403')
+      component: dynamicWrapper(() =>
+        import(/* webpackChunkName: "exception" */ 'src/pages/Exception/403')
       ),
     },
     '/exception/500': {
-      component: dynamicWrapper(
-        /* webpackChunkName: "exception" */ () => import('src/pages/Exception/500')
+      component: dynamicWrapper(() =>
+        import(/* webpackChunkName: "exception" */ 'src/pages/Exception/500')
       ),
     },
     '/user': {
-      component: dynamicWrapper(
-        /* webpackChunkName: "user" */ () => import('src/layouts/UserLayout')
+      component: dynamicWrapper(() =>
+        import(/* webpackChunkName: "user" */ 'src/layouts/UserLayout')
       ),
     },
     '/user/login': {
-      component: dynamicWrapper(
-        /* webpackChunkName: "user" */ () => import('src/pages/User/Login')
+      component: dynamicWrapper(() =>
+        import(/* webpackChunkName: "user" */ 'src/pages/User/Login')
       ),
     },
     '/demo': {
-      component: dynamicWrapper(
-        /* webpackChunkName: "demo" */ () => import('src/layouts/DemoLayout')
+      component: dynamicWrapper(() =>
+        import(/* webpackChunkName: "demo" */ 'src/layouts/DemoLayout')
       ),
     },
     '/demo/spike1': {
-      component: dynamicWrapper(
-        /* webpackChunkName: "demo" */ () => import('src/pages/Demo/Spike1')
+      component: dynamicWrapper(() =>
+        import(/* webpackChunkName: "demo" */ 'src/pages/Demo/Spike1')
       ),
     },
   };

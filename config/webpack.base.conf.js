@@ -73,6 +73,7 @@ module.exports = {
         test: /\.css$/,
         use: [
           devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
+          path.resolve(__dirname, 'typing-css-modules-loader'),
           {
             loader: 'css-loader',
             options: {
@@ -103,6 +104,7 @@ module.exports = {
         test: /\.less$/,
         use: [
           devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
+          path.resolve(__dirname, 'typing-css-modules-loader'),
           {
             loader: 'css-loader',
             options: {

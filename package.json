@@ -7,6 +7,7 @@
   "scripts": {
     "start": "cross-env MOCK=true webpack-dev-server --inline --progress --config config/webpack.dev.conf.js",
     "start:no-mock": "webpack-dev-server --inline --progress --config config/webpack.dev.conf.js",
+    "clean-declare": "cross-env NODE_ENV=development node config/clean.js",
     "build": "node config/build.js",
     "lint": "eslint --ext .ts,.tsx src && npm run lint-style",
     "lint:fix": "eslint --fix --ext .ts,.tsx src && npm run lint-style:fix",
