@@ -24,12 +24,13 @@ function getBreadcrumb(breadcrumbNameMap: IRouterData, url: string) {
 function getRoutesFromLocation(routerLocation: Location, breadcrumbNameMap: IRouterData) {
   const pathSnippets = urlToList(routerLocation.pathname);
   const routes = pathSnippets
-    .map((url, index) => {
+    .map((url /* , index */) => {
       const currentBreadcrumb = getBreadcrumb(breadcrumbNameMap, url);
-      const isLinkable = index !== pathSnippets.length - 1 && currentBreadcrumb.component;
+      // const isLinkable = index !== pathSnippets.length - 1 && currentBreadcrumb.component;
       return currentBreadcrumb.name && !currentBreadcrumb.hideInBreadcrumb
         ? {
-            path: isLinkable ? url : undefined,
+            // path: isLinkable ? url : undefined,
+            path: url,
             breadcrumbName: currentBreadcrumb.name,
           }
         : null;
@@ -53,7 +54,7 @@ const MyPageHeader = (props: PageHeaderProps) => {
   if (breadcrumb) {
     pageHeader = <PageHeader breadcrumb={breadcrumb} {...restProps} />;
   }
-  return <div style={{ margin: '-24px -24px 0' }}>{pageHeader}</div>;
+  return <div style={{ margin: '-24px -24px 24px' }}>{pageHeader}</div>;
 };
 
 export default MyPageHeader;
