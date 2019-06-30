@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import classNames from 'classnames';
+import { observer } from 'mobx-react-lite';
 
-import { isMobileContext } from 'src/context/basicContext';
+import StoreContext from 'src/stores';
 
 import styles from './index.less';
 
@@ -14,7 +15,7 @@ interface FooterToolbarWrapperProps {
 
 const FooterToolbar = (props: FooterToolbarWrapperProps) => {
   const { children, className, extra, ...restProps } = props;
-  const isMobile = useContext(isMobileContext);
+  const { global } = useContext(StoreContext);
   const [width, setWidth] = useState(undefined);
 
   function resizeFooterToolbar() {
@@ -23,7 +24,7 @@ const FooterToolbar = (props: FooterToolbarWrapperProps) => {
       return;
     }
 
-    const newWidth = isMobile ? null : `calc(100% - ${sider.style.width})`;
+    const newWidth = global.isMobile ? null : `calc(100% - ${sider.style.width})`;
     if (width !== newWidth) {
       setWidth(width);
     }

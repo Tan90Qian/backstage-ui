@@ -1,11 +1,14 @@
-import React, { FunctionComponent, useState, useEffect } from 'react';
+import React, { FunctionComponent, useState, useEffect, useContext } from 'react';
 import { Layout, Menu, Icon } from 'antd';
 import { Location } from 'history';
 import { IconComponent, IconProps } from 'antd/lib/icon';
 import pathToRegexp from 'path-to-regexp';
 import { Link } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
 
 import { IMenuItem } from 'src/router/menu';
+import StoreContext from 'src/stores';
+
 import { AuthorizedType } from '../Authorized';
 
 import styles from './index.less';
@@ -22,7 +25,7 @@ export interface HandleCollapse {
 }
 
 export interface SiderMenuProps {
-  logo: string;
+  logo?: string;
   Authorized: AuthorizedType;
   menuData: IMenuItem[];
   collapsed: boolean;
@@ -79,6 +82,7 @@ function conversionPath(path: string) {
 const SiderMenu: FunctionComponent<SiderMenuProps> = (props: SiderMenuProps) => {
   const { location, menuData, isMobile, onCollapse, Authorized, collapsed, logo } = props;
   const { pathname } = location;
+  const { global } = useContext(StoreContext);
   const [flatMenuKeys, setFlatMenuKeys] = useState([]);
   const [openKeys, setOpenKeys] = useState([]);
 
@@ -208,8 +212,8 @@ const SiderMenu: FunctionComponent<SiderMenuProps> = (props: SiderMenuProps) => 
     >
       <div className={styles.logo} key="logo">
         <Link to="/">
-          <img src={logo} alt="logo" />
-          <h1>管理后台</h1>
+          {logo && <img src={logo} alt="logo" />}
+          <h1>{global.globalTitle}</h1>
         </Link>
       </div>
       <Menu
@@ -227,4 +231,4 @@ const SiderMenu: FunctionComponent<SiderMenuProps> = (props: SiderMenuProps) => 
   );
 };
 
-export default SiderMenu;
+export default observer(SiderMenu);

@@ -41,7 +41,7 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': [0],
     '@typescript-eslint/explicit-member-accessibility': [0],
     'react-hooks/rules-of-hooks': 'error',
-    'react-hooks/exhaustive-deps': [0],
+    'react-hooks/exhaustive-deps': 'warn',
     'jsx-a11y/anchor-is-valid': [0],
     'jsx-a11y/click-events-have-key-events': [0],
     'jsx-a11y/no-static-element-interactions': [0],

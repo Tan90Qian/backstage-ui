@@ -3,21 +3,18 @@ import { Menu, Icon, Spin, Dropdown, Divider } from 'antd';
 import { ClickParam } from 'antd/lib/menu';
 import Debounce from 'lodash/debounce';
 import { Link } from 'react-router-dom';
+
+import { CurrentUser } from 'src/stores/UserStore';
+
 import styles from './index.less';
-
 import { HandleCollapse } from '../SiderMenu/SiderMenu';
-
-interface CurrentUser {
-  name?: string;
-  avatar?: string;
-}
 
 interface GlobalHeaderProps {
   collapsed: boolean;
   onCollapse: HandleCollapse;
   currentUser: CurrentUser;
   isMobile: boolean;
-  logo: string;
+  logo?: string;
   onMenuClick: (param: ClickParam) => void;
 }
 
@@ -30,7 +27,7 @@ const triggerResizeEvent = Debounce(() => {
 export default function GlobalHeader(
   props: GlobalHeaderProps
 ): FunctionComponentElement<HTMLElement> {
-  const { currentUser = {}, collapsed, isMobile, logo, onMenuClick } = props;
+  const { currentUser, collapsed, isMobile, logo, onMenuClick } = props;
 
   function toggle() {
     const { onCollapse } = props;
@@ -64,19 +61,20 @@ export default function GlobalHeader(
 
   return (
     <div className={styles.header}>
-      {isMobile && [
-        <Link to="/" className={styles.logo} key="logo">
-          <img src={logo} alt="logo" width="32" />
-        </Link>,
-        <Divider type="vertical" key="line" />,
-      ]}
+      {isMobile &&
+        logo && [
+          <Link to="/" className={styles.logo} key="logo">
+            <img src={logo} alt="logo" width="32" />
+          </Link>,
+          <Divider type="vertical" key="line" />,
+        ]}
       <Icon
         className={styles.trigger}
         type={collapsed ? 'menu-unfold' : 'menu-fold'}
         onClick={toggle}
       />
       <div className={styles.right}>
-        {currentUser.name ? (
+        {currentUser && currentUser.name ? (
           <Dropdown overlay={menu}>
             <span className={`${styles.action} ${styles.account}`}>
               {/* <Avatar size="small" className={styles.avatar} src={currentUser.avatar} /> */}
