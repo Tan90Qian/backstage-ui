@@ -47,4 +47,4 @@ const FooterToolbar = (props: FooterToolbarWrapperProps) => {
   );
 };
 
-export default FooterToolbar;
+export default observer(FooterToolbar);
