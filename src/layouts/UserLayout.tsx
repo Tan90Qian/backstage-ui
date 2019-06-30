@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useContext, Fragment } from 'react';
 import { Link, Switch, Route, Redirect } from 'react-router-dom';
+import { Icon } from 'antd';
 import DocumentTitle from 'react-document-title';
+import { observer } from 'mobx-react-lite';
 
+import StoreContext from 'src/stores';
+import GlobalFooter from 'src/components/GlobalFooter';
 import { RouteComponentProps } from 'src/declares/Component';
 
 import { getRoutes, getPageQuery, getQueryPath, IRouteItem } from 'src/utils/utils';
@@ -15,19 +19,27 @@ function getLoginPathWithRedirectPath(): string {
   });
 }
 
-export default function UserLayout({
+export default observer(function UserLayout({
   routerData,
   location,
   match,
 }: RouteComponentProps): React.FunctionComponentElement<DocumentTitle> {
+  const { global } = useContext(StoreContext);
+
   function getPageTitle(): string {
     const { pathname } = location;
-    let title = '管理后台';
+    let title = global.globalTitle;
     if (routerData[pathname] && routerData[pathname].name) {
-      title = `${routerData[pathname].name} - 管理后台`;
+      title = `${routerData[pathname].name} - ${global.globalTitle}`;
     }
     return title;
   }
+
+  const copyright = (
+    <Fragment>
+      Copyright <Icon type="copyright" /> {global.globalCopyright}
+    </Fragment>
+  );
 
   return (
     <DocumentTitle title={getPageTitle()}>
@@ -36,7 +48,7 @@ export default function UserLayout({
           <div className={styles.top}>
             <div className={styles.header}>
               <Link to="/">
-                <span className={styles.title}>管理后台</span>
+                <span className={styles.title}>{global.globalTitle}</span>
               </Link>
             </div>
           </div>
@@ -52,7 +64,8 @@ export default function UserLayout({
             <Redirect from="/user" to={getLoginPathWithRedirectPath()} />
           </Switch>
         </div>
+        <GlobalFooter copyright={copyright} />
       </div>
     </DocumentTitle>
   );
-}
+});

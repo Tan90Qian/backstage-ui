@@ -1,4 +1,5 @@
 /config/
 /dist/
 /*.js
-**/*.d.ts
+**/*.css.d.ts
+**/*.less.d.ts

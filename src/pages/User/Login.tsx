@@ -4,7 +4,8 @@ import { InputProps } from 'antd/lib/input';
 import { WrappedFormInternalProps } from 'antd/lib/form/Form';
 
 import { RouteComponentProps } from 'src/declares/Component';
-import { setAuthority } from 'src/utils/authority';
+import { Code } from 'src/declares/Request';
+import { setAuthority, AuthorityType } from 'src/utils/authority';
 import { reloadAuthorized } from 'src/utils/Authorized';
 import { getPageQuery } from 'src/utils/utils';
 import { login } from 'src/services/user';
@@ -27,44 +28,38 @@ function Login(props: ComponentProps): FunctionComponentElement<HTMLElement> {
   const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = (e: FormEvent): void => {
-    e.preventDefault();
-    validateFields({ force: true }, (err, value) => {
+    if (e) e.preventDefault();
+    validateFields({ force: true }, async (err, value) => {
       if (!err) {
         setSubmitting(true);
-        login(value)
-          .then(res => {
-            setSubmitting(false);
-            const {
-              code,
-              data: { authority },
-            } = res.data;
-            if (code === 0) {
-              setAuthority(authority);
-              reloadAuthorized();
-              const urlParams = new URL(window.location.href);
-              const params = getPageQuery();
-              let { redirect } = params;
-              if (redirect) {
-                const redirectUrlParams = new URL(redirect);
-                if (redirectUrlParams.origin === urlParams.origin) {
-                  redirect = redirect.substr(urlParams.origin.length + urlParams.pathname.length);
-                  if (redirect.startsWith('#')) {
-                    redirect = redirect.substr(1);
-                  } else if (redirect.startsWith('/#')) {
-                    redirect = redirect.substr(2);
-                  }
-                } else {
-                  window.location.href = redirect;
-                  return;
-                }
+        const res = await login(value);
+        setSubmitting(false);
+        const { code } = res;
+        if (code === Code.成功) {
+          message.success(res.msg || '登录成功');
+          setAuthority(AuthorityType.user);
+          reloadAuthorized();
+          const urlParams = new URL(window.location.href);
+          const params = getPageQuery();
+          let { redirect } = params;
+          if (redirect) {
+            const redirectUrlParams = new URL(redirect);
+            if (redirectUrlParams.origin === urlParams.origin) {
+              redirect = redirect.substr(urlParams.origin.length);
+              if (redirect.startsWith('#')) {
+                redirect = redirect.substr(1);
+              } else if (redirect.startsWith('/#')) {
+                redirect = redirect.substr(2);
               }
-              history.replace(redirect || '/');
+            } else {
+              window.location.href = redirect;
+              return;
             }
-          })
-          .catch(error => {
-            message.error(error.data.msg || '提交失败');
-            setSubmitting(false);
-          });
+          }
+          history.replace(redirect || '/');
+        } else {
+          message.error(res.msg || '提交失败');
+        }
       }
     });
   };
@@ -79,7 +74,7 @@ function Login(props: ComponentProps): FunctionComponentElement<HTMLElement> {
         <Tabs animated={false} className={styles.tabs} activeKey={type} onChange={onSwitch}>
           <TabPane tab="账号密码登录" key="account">
             <FormItem>
-              {getFieldDecorator('username', {
+              {getFieldDecorator('userName', {
                 rules: [
                   {
                     required: true,

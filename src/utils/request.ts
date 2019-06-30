@@ -46,15 +46,12 @@ function errCallback(err: AxiosError) {
 
   if (status === 403) {
     history.push('/exception/403');
-    return err.response;
   }
   if (status >= 404 && status < 422) {
     history.push('/exception/404');
-    return err.response;
   }
   if (status >= 500 && status <= 504) {
     history.push('/exception/500');
-    return err.response;
   }
   return Promise.reject(err.response);
 }

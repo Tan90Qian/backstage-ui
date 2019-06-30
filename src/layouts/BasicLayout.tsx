@@ -1,28 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import { Layout } from 'antd';
+import React, { useState, useEffect, useContext, Fragment, useCallback } from 'react';
+import { Layout, Icon, message } from 'antd';
 import { Route, Redirect, Switch, RedirectProps } from 'react-router-dom';
 import enquireJs from 'enquire.js';
 import pathToRegexp from 'path-to-regexp';
 import DocumentTitle from 'react-document-title';
 import { ContainerQuery } from 'react-container-query';
 import classNames from 'classnames';
+import { observer } from 'mobx-react-lite';
 
+import StoreContext from 'src/stores';
 import Authorized from 'src/utils/Authorized';
 import { getRoutes } from 'src/utils/utils';
 import logo from 'src/assets/logo.jpg';
 
 import { doLogout } from 'src/services/_utils';
-import { logout, getCurrentUser } from 'src/services/user';
+import { logout } from 'src/services/user';
 
 import { IRouterData, IRouterItem } from 'src/router/router';
 import { getMenuData, IMenuItem } from 'src/router/menu';
 import GlobalHeader from 'src/components/GlobalHeader';
 import GlobalFooter from 'src/components/GlobalFooter';
 import SiderMenu from 'src/components/SiderMenu';
-import { isMobileContext, breadcrumbContext } from 'src/context/basicContext';
 import NotFound from 'src/pages/Exception/404';
 
 import { RouteComponentProps } from 'src/declares/Component';
+import { Code } from 'src/declares/Request';
 
 const { Content, Header, Footer } = Layout;
 const { AuthorizedRoute } = Authorized;
@@ -82,39 +84,44 @@ const query = {
   },
 };
 
-export default function BasicLayout(
+export default observer(function BasicLayout(
   props: RouteComponentProps
 ): React.FunctionComponentElement<HTMLElement> {
   const { history, location, match, routerData } = props;
 
-  const [isMobile, setIsMobile] = useState(false);
+  const { user, global } = useContext(StoreContext);
   const [collapsed, setCollapsed] = useState(false);
-  const [currentUser, setCurrentUser] = useState({});
-  const [breadcrumbNameMap, setBreadcrumbNameMap] = useState({});
 
   function handleMenuCollapse(isCollapsed: boolean) {
     setCollapsed(isCollapsed);
   }
 
-  function handleMenuClick({ key }: { key: string }) {
+  async function handleMenuClick({ key }: { key: string }) {
     if (key === 'logout') {
-      logout().then(res => {
-        if (res.data.code === 0) {
+      const res = await logout();
+      try {
+        if (res.code === Code.成功) {
           doLogout(history);
         }
-      });
+      } catch (e) {
+        message.error(e);
+      }
     }
   }
+
+  const queryMobile = useCallback(
+    (mobile: boolean) => {
+      global.setIsMobile(mobile);
+    },
+    [global]
+  );
 
   useEffect(() => {
     /* 查询是否是移动端（排除iPad） */
     const mobileQuery = 'only screen and (max-width: 767.99px)';
-    function querMobile(mobile: boolean) {
-      setIsMobile(mobile);
-    }
     const handler = {
-      match: () => querMobile(true),
-      unmatch: () => querMobile(false),
+      match: () => queryMobile(true),
+      unmatch: () => queryMobile(false),
     };
 
     enquireJs.register(mobileQuery, handler);
@@ -122,27 +129,21 @@ export default function BasicLayout(
     return function clearHandler() {
       enquireJs.unregister(mobileQuery, handler);
     };
-  }, []);
+  }, [queryMobile]);
 
   useEffect(() => {
-    setBreadcrumbNameMap(getBreadcrumbNameMap(getMenuData(), routerData));
-  }, [routerData]);
+    global.setLocation(location);
+    global.setBreadcrumbNameMap(getBreadcrumbNameMap(getMenuData(), routerData));
+  }, [global, location, routerData]);
 
   useEffect(() => {
     /* 获取用户信息 */
-    getCurrentUser().then(res => {
-      const { code, data }: { code: number; data: object } = res.data;
-      if (code === 0) {
-        setCurrentUser(data);
-      } else {
-        doLogout(history);
-      }
-    });
-  }, [history]);
+    user.fetchCurrentUser();
+  }, [user]);
 
   function getPageTitle(): string {
     const { pathname } = location;
-    let title = '管理后台';
+    let title = global.globalTitle;
     let currRouterData: IRouterItem;
     // match params path
     Object.keys(routerData).forEach(key => {
@@ -151,7 +152,7 @@ export default function BasicLayout(
       }
     });
     if (currRouterData && currRouterData.name) {
-      title = `${currRouterData.name} - 管理后台`;
+      title = `${currRouterData.name} - ${global.globalTitle}`;
     }
     return title;
   }
@@ -165,16 +166,16 @@ export default function BasicLayout(
         menuData={getMenuData()}
         collapsed={collapsed}
         location={location}
-        isMobile={isMobile}
+        isMobile={global.isMobile}
         onCollapse={handleMenuCollapse}
       />
       <Layout>
         <Header style={{ padding: 0 }}>
           <GlobalHeader
             logo={logo}
-            currentUser={currentUser}
+            currentUser={user.currentUser}
             collapsed={collapsed}
-            isMobile={isMobile}
+            isMobile={global.isMobile}
             onCollapse={handleMenuCollapse}
             onMenuClick={handleMenuClick}
           />
@@ -194,26 +195,28 @@ export default function BasicLayout(
                 redirectPath="/exception/403"
               />
             ))}
-            <Redirect exact from="/" to="/exception/403" />
+            <Redirect exact from="/" to="/welcome" />
             <Route render={NotFound} />
           </Switch>
         </Content>
         <Footer style={{ padding: 0 }}>
-          <GlobalFooter copyright="Copyright" />
+          <GlobalFooter
+            copyright={
+              <Fragment>
+                Copyright <Icon type="copyright" /> {global.globalCopyright}
+              </Fragment>
+            }
+          />
         </Footer>
       </Layout>
     </Layout>
   );
 
   return (
-    <breadcrumbContext.Provider value={{ breadcrumbNameMap, location }}>
-      <isMobileContext.Provider value={isMobile}>
-        <DocumentTitle title={getPageTitle()}>
-          <ContainerQuery query={query}>
-            {params => <div className={classNames(params)}>{layout}</div>}
-          </ContainerQuery>
-        </DocumentTitle>
-      </isMobileContext.Provider>
-    </breadcrumbContext.Provider>
+    <DocumentTitle title={getPageTitle()}>
+      <ContainerQuery query={query}>
+        {params => <div className={classNames(params)}>{layout}</div>}
+      </ContainerQuery>
+    </DocumentTitle>
   );
-}
+});

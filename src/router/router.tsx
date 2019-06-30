@@ -73,6 +73,9 @@ function getRouterData() {
         import(/* webpackChunkName: "basic" */ 'src/layouts/BasicLayout')
       ),
     },
+    '/welcome': {
+      component: dynamicWrapper(() => import(/* webpackChunkName: "basic" */ 'src/pages/Welcome')),
+    },
     '/exception/404': {
       component: dynamicWrapper(() =>
         import(/* webpackChunkName: "exception" */ 'src/pages/Exception/404')

@@ -1,11 +1,14 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import pathToRegexp from 'path-to-regexp';
 import { PageHeader } from 'antd';
 import { PageHeaderProps } from 'antd/lib/page-header';
+import { Route } from 'antd/lib/breadcrumb/Breadcrumb';
 import { Location } from 'history';
+import { Link } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
 
+import StoreContext from 'src/stores';
 import { IRouterData } from 'src/router/router';
-import { breadcrumbContext } from 'src/context/basicContext';
 
 import { urlToList } from '../_utils/pathTools';
 
@@ -24,12 +27,14 @@ function getBreadcrumb(breadcrumbNameMap: IRouterData, url: string) {
 function getRoutesFromLocation(routerLocation: Location, breadcrumbNameMap: IRouterData) {
   const pathSnippets = urlToList(routerLocation.pathname);
   const routes = pathSnippets
-    .map((url, index) => {
+    // .map((url, index) => {
+    .map((url /* , index */) => {
       const currentBreadcrumb = getBreadcrumb(breadcrumbNameMap, url);
-      const isLinkable = index !== pathSnippets.length - 1 && currentBreadcrumb.component;
+      // const isLinkable = index !== pathSnippets.length - 1 && currentBreadcrumb.component;
       return currentBreadcrumb.name && !currentBreadcrumb.hideInBreadcrumb
         ? {
-            path: isLinkable ? url : undefined,
+            // path: isLinkable ? url : undefined,
+            path: url,
             breadcrumbName: currentBreadcrumb.name,
           }
         : null;
@@ -42,18 +47,31 @@ function getRoutesFromLocation(routerLocation: Location, breadcrumbNameMap: IRou
   return routes;
 }
 
+function itemRender(route: Route, _: any, routes: Route[]) {
+  const last = routes.indexOf(route) === routes.length - 1;
+  return last ? (
+    <span>{route.breadcrumbName}</span>
+  ) : (
+    <Link to={route.path}>{route.breadcrumbName}</Link>
+  );
+}
+
 const MyPageHeader = (props: PageHeaderProps) => {
   const { breadcrumb, ...restProps } = props;
-  const { breadcrumbNameMap, location } = useContext(breadcrumbContext);
-  const [routes, setRoutes] = useState([]);
-  useEffect(() => {
-    setRoutes(getRoutesFromLocation(location, breadcrumbNameMap));
-  }, [location, breadcrumbNameMap]);
-  let pageHeader = <PageHeader breadcrumb={{ routes }} {...restProps} />;
+  const { global } = useContext(StoreContext);
+  let pageHeader = (
+    <PageHeader
+      breadcrumb={{
+        routes: getRoutesFromLocation(global.location, global.breadcrumbNameMap),
+        itemRender,
+      }}
+      {...restProps}
+    />
+  );
   if (breadcrumb) {
     pageHeader = <PageHeader breadcrumb={breadcrumb} {...restProps} />;
   }
-  return <div style={{ margin: '-24px -24px 0' }}>{pageHeader}</div>;
+  return <div style={{ margin: '-24px -24px 24px' }}>{pageHeader}</div>;
 };
 
-export default MyPageHeader;
+export default observer(MyPageHeader);
