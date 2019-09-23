@@ -16,6 +16,16 @@ export interface IMenuItem {
 
 const menuData: IMenuItem[] = [
   {
+    name: '测试',
+    path: 'test',
+    children: [
+      {
+        name: 'Hello World',
+        path: 'hello-world',
+      },
+    ],
+  },
+  {
     name: '异常页',
     icon: 'warning',
     path: 'exception',

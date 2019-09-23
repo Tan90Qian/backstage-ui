@@ -1,4 +1,4 @@
-import { observable, action, computed } from 'mobx';
+import { observable, action, computed, runInAction } from 'mobx';
 import { Location } from 'history';
 import pathToRegexp from 'path-to-regexp';
 
@@ -39,33 +39,41 @@ export class GlobalPresenter {
 export class GlobalStore {
   static instance = new GlobalStore();
 
-  @observable globalTitle = 'Backsatge-ui';
+  @observable globalTitle: string;
 
-  @observable globalCopyright = 'Backsatge-ui 2019';
+  @observable globalCopyright: string;
 
-  @observable isMobile = false;
+  @observable isMobile: boolean;
 
-  @observable routerData: IRouterData = {};
+  @observable routerData: IRouterData;
 
-  @observable location: Location<any> = null;
+  @observable location: Location<any>;
+
+  constructor() {
+    runInAction(() => {
+      this.globalTitle = 'Backsatge-ui';
+      this.globalCopyright = 'Backsatge-ui 2019';
+      this.isMobile = false;
+      this.routerData = {};
+      this.location = null;
+    });
+  }
 
   @computed
   get pageTitle() {
-    const { globalTitle, location, routerData } = this;
-    let title = globalTitle;
     let currRouterData: IRouterItem;
     // match params path
-    if (location) {
-      Object.keys(routerData).forEach(key => {
-        if (pathToRegexp(key).test(location.pathname)) {
-          currRouterData = routerData[key];
+    if (this.location && this.routerData) {
+      Object.keys(this.routerData).forEach(key => {
+        if (pathToRegexp(key).test(this.location.pathname)) {
+          currRouterData = this.routerData[key];
         }
       });
       if (currRouterData && currRouterData.name) {
-        title = `${currRouterData.name} - ${globalTitle}`;
+        return `${currRouterData.name} - ${this.globalTitle}`;
       }
     }
-    return title;
+    return this.globalTitle;
   }
 
   @computed

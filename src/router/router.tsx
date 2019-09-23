@@ -90,6 +90,13 @@ function getRouterData(service: IService, store: IStore) {
         store
       ),
     },
+    '/test/hello-world': {
+      component: dynamicWrapper(
+        () => import(/* webpackChunkName: "basic" */ 'src/pages/Test/HelloWorld'),
+        service,
+        store
+      ),
+    },
     '/exception/404': {
       component: dynamicWrapper(() =>
         import(/* webpackChunkName: "exception" */ 'src/pages/Exception/404')

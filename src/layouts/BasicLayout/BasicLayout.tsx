@@ -1,6 +1,6 @@
 import React, { useEffect, Fragment } from 'react';
 import { Layout, Icon } from 'antd';
-import { Route, Redirect, Switch, RedirectProps } from 'react-router-dom';
+import { Redirect, Switch, RedirectProps } from 'react-router-dom';
 import enquireJs from 'enquire.js';
 import { Location } from 'history';
 import DocumentTitle from 'react-document-title';
@@ -15,7 +15,6 @@ import { IMenuItem } from 'src/router/menu';
 import GlobalHeader from 'src/components/GlobalHeader';
 import GlobalFooter from 'src/components/GlobalFooter';
 import SiderMenu from 'src/components/SiderMenu';
-import NotFound from 'src/pages/Exception/404';
 import Authorized from 'src/utils/Authorized';
 
 import { getRoutes } from 'src/utils/utils';
@@ -149,7 +148,7 @@ export function BasicLayout(props: BasicLayoutProps) {
               />
             ))}
             <Redirect exact from="/" to="/welcome" />
-            <Route render={NotFound} />
+            <Redirect to="/exception/404" />
           </Switch>
         </Content>
         <Footer style={{ padding: 0 }}>
