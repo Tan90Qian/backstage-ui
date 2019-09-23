@@ -37,7 +37,7 @@ export class GlobalPresenter {
 }
 
 export class GlobalStore {
-  static instance = new GlobalStore();
+  static instance: GlobalStore;
 
   @observable globalTitle: string;
 
@@ -81,3 +81,5 @@ export class GlobalStore {
     return getBreadcrumbNameMap(getMenuData(), this.routerData);
   }
 }
+
+GlobalStore.instance = new GlobalStore();
