@@ -1,7 +1,7 @@
 import React from 'react';
-
 import { PageHeader } from 'antd';
+import { observer } from 'mobx-react-lite';
 
-export default function Welcome() {
-  return <PageHeader title="欢迎使用玛仔集团仲裁管理系统" />;
+export default function createWelcome() {
+  return observer(() => <PageHeader title="欢迎使用Backstage-ui" />);
 }

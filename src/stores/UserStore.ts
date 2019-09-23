@@ -1,16 +1,52 @@
-import { observable, action, runInAction, computed, configure } from 'mobx';
+import { observable, action, computed } from 'mobx';
 import { message } from 'antd';
+import { History } from 'history';
 
-import { Code } from 'src/declares/Request';
-import { getCurrentUser } from 'src/services/user';
+import { BodyCode } from 'src/declares/Request';
+import { UserService } from 'src/services/user';
 import { doLogout } from 'src/services/_utils';
-import { history } from 'src/utils/history';
-
-configure({ enforceActions: 'always' });
 
 export interface CurrentUser {
   name: string;
   avatar?: string;
+}
+
+export class UserPresenter {
+  service: UserService;
+
+  constructor(service: UserService) {
+    this.service = service;
+  }
+
+  @action
+  setCurrentUser(store: UserStore, currentUser: CurrentUser) {
+    store.currentUser = currentUser;
+  }
+
+  @action
+  async fetchCurrentUser(store: UserStore, history: History) {
+    const res = await this.service.getCurrentUser();
+    const { code, data, message: msg } = res;
+    if (code === BodyCode.success) {
+      const { name } = data;
+      this.setCurrentUser(store, { name });
+    } else {
+      message.error(msg || '无法获取用户信息');
+      doLogout(history);
+    }
+  }
+
+  @action
+  async logout(history: History) {
+    const res = await this.service.logout();
+    try {
+      if (res.code === BodyCode.success) {
+        doLogout(history);
+      }
+    } catch (e) {
+      message.error(e);
+    }
+  }
 }
 
 export class UserStore {
@@ -20,24 +56,5 @@ export class UserStore {
     return this.currentUser && this.currentUser.name;
   }
 
-  @action
-  async fetchCurrentUser() {
-    const res = await getCurrentUser();
-    const { code, data, msg } = res;
-    if (code === Code.成功) {
-      const { name } = data;
-      runInAction(() => {
-        this.currentUser = {
-          name,
-        };
-      });
-    } else {
-      message.error(msg || '无法获取用户信息');
-      doLogout(history);
-    }
-  }
+  static instance = new UserStore();
 }
-
-const userStore = new UserStore();
-
-export default userStore;

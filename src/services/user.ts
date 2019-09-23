@@ -1,26 +1,34 @@
 import { IResponseData } from 'src/declares/Request';
-import { request } from './base';
+import { IRequest } from './base';
 
-interface LoginParams {
+export interface LoginParams {
   userName: string;
   password: string;
 }
 
-export async function login(params: LoginParams) {
-  return request('/Api/User/login', {
-    method: 'post',
-    data: params,
-  });
-}
+export class UserService {
+  engine: IRequest;
 
-export async function logout() {
-  return request('/Api/User/logout');
+  constructor(engine: IRequest) {
+    this.engine = engine;
+  }
+
+  async login(params: LoginParams) {
+    return this.engine('/Api/User/login', {
+      method: 'post',
+      data: params,
+    });
+  }
+
+  async logout() {
+    return this.engine('/Api/User/logout');
+  }
+
+  async getCurrentUser(): Promise<IResponseData<CurrentUser>> {
+    return this.engine('/Api/User/currentUser');
+  }
 }
 
 interface CurrentUser {
   name: string;
-}
-
-export async function getCurrentUser(): Promise<IResponseData<CurrentUser>> {
-  return request('/Api/User/currentUser');
 }

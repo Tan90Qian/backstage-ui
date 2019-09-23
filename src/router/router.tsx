@@ -5,14 +5,11 @@ import pathToRegexp from 'path-to-regexp';
 import Loadable from 'react-loadable';
 
 import { authorityType } from 'src/components/Authorized/utils';
+import { IFactory, IService, IStore } from 'src/declares/Component';
 
 import { getMenuData, IMenuItem } from './menu';
 
 type Pick<T, K extends keyof T> = { [P in K]?: T[P] };
-
-interface IComponent {
-  (): Promise<any>;
-}
 
 interface IMenuData {
   [propName: string]: IMenuItem;
@@ -32,14 +29,25 @@ type IMenuItemPicked = Pick<IMenuItem, keyof IMenuItem>;
 
 let routerDataCache: IRouterData;
 
-const dynamicWrapper = (component: IComponent): ComponentType<any> => {
+interface IComponent {
+  // TODO 从Promise<IFactory>切到any吧
+  // (): Promise<IFactory>;
+  (): any;
+}
+
+const dynamicWrapper = (
+  component: IComponent,
+  service?: IService,
+  store?: IStore
+): ComponentType<any> => {
   return Loadable({
     loader: () => {
       if (!routerDataCache) {
-        routerDataCache = getRouterData();
+        routerDataCache = getRouterData(service, store);
       }
       return component().then((raw: any) => {
-        const Component = raw.default || raw;
+        const factory: IFactory = raw.default || raw;
+        const Component = factory({ service, store });
         return (props: any) =>
           createElement(Component, {
             ...props,
@@ -66,15 +74,21 @@ function getFlatMenuData(menus: IMenuItem[]) {
   return keys;
 }
 
-function getRouterData() {
+function getRouterData(service: IService, store: IStore) {
   const routerConfig: IRouterData = {
     '/': {
-      component: dynamicWrapper(() =>
-        import(/* webpackChunkName: "basic" */ 'src/layouts/BasicLayout')
+      component: dynamicWrapper(
+        () => import(/* webpackChunkName: "basic" */ 'src/layouts/BasicLayout'),
+        service,
+        store
       ),
     },
     '/welcome': {
-      component: dynamicWrapper(() => import(/* webpackChunkName: "basic" */ 'src/pages/Welcome')),
+      component: dynamicWrapper(
+        () => import(/* webpackChunkName: "basic" */ 'src/pages/Welcome'),
+        service,
+        store
+      ),
     },
     '/exception/404': {
       component: dynamicWrapper(() =>
@@ -92,23 +106,17 @@ function getRouterData() {
       ),
     },
     '/user': {
-      component: dynamicWrapper(() =>
-        import(/* webpackChunkName: "user" */ 'src/layouts/UserLayout')
+      component: dynamicWrapper(
+        () => import(/* webpackChunkName: "user" */ 'src/layouts/UserLayout'),
+        service,
+        store
       ),
     },
     '/user/login': {
-      component: dynamicWrapper(() =>
-        import(/* webpackChunkName: "user" */ 'src/pages/User/Login')
-      ),
-    },
-    '/demo': {
-      component: dynamicWrapper(() =>
-        import(/* webpackChunkName: "demo" */ 'src/layouts/DemoLayout')
-      ),
-    },
-    '/demo/spike1': {
-      component: dynamicWrapper(() =>
-        import(/* webpackChunkName: "demo" */ 'src/pages/Demo/Spike1')
+      component: dynamicWrapper(
+        () => import(/* webpackChunkName: "user" */ 'src/pages/User/Login'),
+        service,
+        store
       ),
     },
   };

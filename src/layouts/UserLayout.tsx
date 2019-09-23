@@ -1,12 +1,16 @@
-import React, { useContext, Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { Link, Switch, Route, Redirect } from 'react-router-dom';
+import { Location } from 'history';
 import { Icon } from 'antd';
 import DocumentTitle from 'react-document-title';
 import { observer } from 'mobx-react-lite';
 
-import StoreContext from 'src/stores';
+import { GlobalPresenter } from 'src/stores/GlobalStore';
+
+import { IRouterData } from 'src/router/router';
+
 import GlobalFooter from 'src/components/GlobalFooter';
-import { RouteComponentProps } from 'src/declares/Component';
+import { IFactory, RouteComponentProps } from 'src/declares/Component';
 
 import { getRoutes, getPageQuery, getQueryPath, IRouteItem } from 'src/utils/utils';
 import styles from './UserLayout.less';
@@ -19,36 +23,46 @@ function getLoginPathWithRedirectPath(): string {
   });
 }
 
-export default observer(function UserLayout({
+interface UserLayoutProps extends RouteComponentProps {
+  pageTitle: string;
+  globalTitle: string;
+  globalCopyright: string;
+  updateLocation: (location: Location) => void;
+  updateRouterData: (routerData: IRouterData) => void;
+}
+
+function UserLayout({
+  match,
   routerData,
   location,
-  match,
-}: RouteComponentProps): React.FunctionComponentElement<DocumentTitle> {
-  const { global } = useContext(StoreContext);
+  globalCopyright,
+  pageTitle = '',
+  globalTitle,
+  updateLocation,
+  updateRouterData,
+}: UserLayoutProps) {
+  useEffect(() => {
+    updateLocation(location);
+  }, [updateLocation, location]);
 
-  function getPageTitle(): string {
-    const { pathname } = location;
-    let title = global.globalTitle;
-    if (routerData[pathname] && routerData[pathname].name) {
-      title = `${routerData[pathname].name} - ${global.globalTitle}`;
-    }
-    return title;
-  }
+  useEffect(() => {
+    updateRouterData(routerData);
+  }, [updateRouterData, routerData]);
 
   const copyright = (
     <Fragment>
-      Copyright <Icon type="copyright" /> {global.globalCopyright}
+      Copyright <Icon type="copyright" /> {globalCopyright}
     </Fragment>
   );
 
   return (
-    <DocumentTitle title={getPageTitle()}>
+    <DocumentTitle title={pageTitle}>
       <div className={styles.container}>
         <div className={styles.content}>
           <div className={styles.top}>
             <div className={styles.header}>
               <Link to="/">
-                <span className={styles.title}>{global.globalTitle}</span>
+                <span className={styles.title}>{globalTitle}</span>
               </Link>
             </div>
           </div>
@@ -68,4 +82,29 @@ export default observer(function UserLayout({
       </div>
     </DocumentTitle>
   );
-});
+}
+
+const createUserLayout: IFactory = ({ store }) => {
+  const { global: globalStore } = store;
+
+  const updateLocation = (location: Location) => {
+    GlobalPresenter.setLocation(globalStore, location);
+  };
+
+  const updateRouterData = (routerData: IRouterData) => {
+    GlobalPresenter.setRouterData(globalStore, routerData);
+  };
+
+  return observer((props: RouteComponentProps) => (
+    <UserLayout
+      {...props}
+      pageTitle={globalStore.pageTitle}
+      globalCopyright={globalStore.globalCopyright}
+      globalTitle={globalStore.globalTitle}
+      updateLocation={updateLocation}
+      updateRouterData={updateRouterData}
+    />
+  ));
+};
+
+export default createUserLayout;

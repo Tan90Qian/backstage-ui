@@ -16,6 +16,8 @@ module.exports = {
     jasmine: true,
   },
   rules: {
+    'no-param-reassign': [0],
+    'class-methods-use-this': [0],
     'no-restricted-syntax': [0],
     'no-use-before-define': [0],
     'react/jsx-filename-extension': [1, { extensions: ['.ts', '.tsx'] }],
