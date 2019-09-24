@@ -6,11 +6,9 @@ import { UserStore } from './UserStore';
 
 configure({ enforceActions: 'always' });
 
-const globalStore = new GlobalStore();
-
 export const stores = {
   user: UserStore.instance,
-  global: globalStore,
+  global: GlobalStore.instance,
 };
 
 const StoreContext = React.createContext(stores);

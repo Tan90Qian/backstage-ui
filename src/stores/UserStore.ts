@@ -56,5 +56,7 @@ export class UserStore {
     return this.currentUser && this.currentUser.name;
   }
 
-  static instance = new UserStore();
+  static instance: UserStore;
 }
+
+UserStore.instance = new UserStore();

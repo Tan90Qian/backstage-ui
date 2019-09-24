@@ -1,4 +1,4 @@
-import { observable, action, computed, runInAction } from 'mobx';
+import { observable, action, computed } from 'mobx';
 import { Location } from 'history';
 import pathToRegexp from 'path-to-regexp';
 
@@ -37,27 +37,17 @@ export class GlobalPresenter {
 }
 
 export class GlobalStore {
-  static instance = new GlobalStore();
+  static instance: GlobalStore;
 
-  @observable globalTitle: string;
+  @observable globalTitle = 'Backsatge-ui';
 
-  @observable globalCopyright: string;
+  @observable globalCopyright = 'Backsatge-ui 2019';
 
-  @observable isMobile: boolean;
+  @observable isMobile = false;
 
-  @observable routerData: IRouterData;
+  @observable routerData: IRouterData = {};
 
-  @observable location: Location<any>;
-
-  constructor() {
-    runInAction(() => {
-      this.globalTitle = 'Backsatge-ui';
-      this.globalCopyright = 'Backsatge-ui 2019';
-      this.isMobile = false;
-      this.routerData = {};
-      this.location = null;
-    });
-  }
+  @observable location: Location<any> = null;
 
   @computed
   get pageTitle() {
@@ -81,3 +71,5 @@ export class GlobalStore {
     return getBreadcrumbNameMap(getMenuData(), this.routerData);
   }
 }
+
+GlobalStore.instance = new GlobalStore();

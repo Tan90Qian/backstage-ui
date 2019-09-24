@@ -48,7 +48,8 @@ module.exports = {
           {
             loader: 'ts-loader',
             options: {
-              transpileOnly: true,
+              configFile: 'tsconfig.app.json',
+              transpileOnly: devMode,
               getCustomTransformers: () => ({
                 before: [
                   tsImportPluginFactory([
@@ -60,9 +61,6 @@ module.exports = {
                   ]),
                 ],
               }),
-              compilerOptions: {
-                module: 'es2015',
-              },
               experimentalWatchApi: true,
             },
           },
