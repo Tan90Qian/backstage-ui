@@ -4,9 +4,9 @@ import { CardTabListType } from 'antd/lib/card';
 export class TabsStore {
   @observable activeKey: string;
 
-  @observable tabList: CardTabListType;
+  @observable tabList: CardTabListType[];
 
-  constructor(tabList?: CardTabListType, defaultActiveKey?: string) {
+  constructor(tabList?: CardTabListType[], defaultActiveKey?: string) {
     runInAction(() => {
       this.tabList = tabList;
       this.activeKey = defaultActiveKey;
@@ -21,7 +21,7 @@ export class TabsPresenter {
   }
 
   @action
-  public static setTabList(store: TabsStore, tabList: CardTabListType) {
+  public static setTabList(store: TabsStore, tabList: CardTabListType[]) {
     store.tabList = tabList;
   }
 }

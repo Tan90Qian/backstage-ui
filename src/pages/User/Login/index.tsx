@@ -8,10 +8,17 @@ import { TabsPresenter, TabsStore } from 'src/stores/base/tabs-presenter';
 import { LoginStore, LoginPresenter } from './LoginPresenter';
 import { Login, OnSubmit, LoginProps } from './Login';
 
+const tabList = [
+  {
+    key: 'account',
+    tab: '账号密码登录',
+  },
+];
+
 const createLogin: IFactory = ({ service }) => {
   const { user: userService } = service;
   const loginStore = new LoginStore();
-  const tabStore = new TabsStore('account');
+  const tabStore = new TabsStore(tabList, 'account');
   const loginPresenter = new LoginPresenter(userService);
 
   const handleSubmit: OnSubmit = (e, form) => {

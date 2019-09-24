@@ -1,4 +1,4 @@
-import { observable, action, computed, runInAction } from 'mobx';
+import { observable, action, computed } from 'mobx';
 import { Location } from 'history';
 import pathToRegexp from 'path-to-regexp';
 
