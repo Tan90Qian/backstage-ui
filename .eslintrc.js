@@ -34,6 +34,7 @@ module.exports = {
         prop: 'ignore',
       },
     ],
+    'import/extensions': [0],
     'import/no-cycle': 'error',
     'import/no-unresolved': [0],
     'import/prefer-default-export': [0],
