@@ -35,7 +35,7 @@
     "mobx-react-lite": "^1.4.0",
     "mockjs": "^1.0.1-beta3",
     "path-to-regexp": "^3.0.0",
-    "qs": "^6.7.0",
+    "qs": "^6.7.3",
     "react": "^16.8.6",
     "react-container-query": "^0.11.0",
     "react-document-title": "^2.0.3",
